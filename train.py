@@ -2,6 +2,7 @@
 Script to train model.
 """
 import os
+import time
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -16,12 +17,12 @@ from keras import backend as K
 from keras.utils import to_categorical
 
 
-plt.rcParams["figure.figsize"] = (10.0, 8.0) # set default size of plots
+plt.rcParams["figure.figsize"] = (10.0, 8.0)  # set default size of plots
 plt.rcParams["image.interpolation"] = "nearest"
 plt.rcParams["image.cmap"] = "gray"
 
 BATCH_SIZE = 128
-EPOCHS = 5
+EPOCHS = 3
 NOISE_DIM = 96
 
 
@@ -228,8 +229,10 @@ def main():
     assert len(combined._collected_trainable_weights) == n_gen_trainable
 
     print("Training")
+    start = time.time()
     train(generator, discriminator, combined, x_train,
           batch_size=BATCH_SIZE, epochs=EPOCHS, noise_dim=NOISE_DIM)
+    print("\tTime taken = {:.2f} mins".format((time.time() - start) / 60))
 
     print("Save Keras model")
     generator.save("/artefact/generator.h5")
