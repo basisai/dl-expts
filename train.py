@@ -1,6 +1,7 @@
 """
 Script to train model.
 """
+import os
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -187,11 +188,14 @@ def train(generator, discriminator, combined, x_train,
 
 def main():
     """Train pipeline"""
-    device_name = tf.test.gpu_device_name()
-    # if device_name != "/device:GPU:0":
-    #     raise SystemError("GPU device not found")
-    print("Found GPU at: {}".format(device_name))
-    print("TensorFlow Version: {}".format(tf.__version__))
+    from tensorflow.python.client import device_lib
+    print("List local devices")
+    print(device_lib.list_local_devices())
+
+    print("\nGet available GPUs")
+    print(K.tensorflow_backend._get_available_gpus())
+
+    os.mkdir("/artefact/plots/")
 
     (x_train, y_train), (_, _) = load_mnist_data(dim=3)
     
