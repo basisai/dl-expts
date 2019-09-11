@@ -188,8 +188,8 @@ def train(generator, discriminator, combined, x_train,
 def main():
     """Train pipeline"""
     device_name = tf.test.gpu_device_name()
-    if device_name != "/device:GPU:0":
-        raise SystemError("GPU device not found")
+    # if device_name != "/device:GPU:0":
+    #     raise SystemError("GPU device not found")
     print("Found GPU at: {}".format(device_name))
     print("TensorFlow Version: {}".format(tf.__version__))
 
