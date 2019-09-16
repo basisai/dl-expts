@@ -1,0 +1,8 @@
+bdrk==0.0.1
+numpy==1.17.0
+torch==1.1.0
+torchvision==0.3.0
+pytorch-transformers==1.2.0
+seqeval==0.0.12
+gcsfs==0.2.2
+google-cloud==0.34.0

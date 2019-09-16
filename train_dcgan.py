@@ -1,5 +1,5 @@
 """
-Script to train model.
+Script to train DCGAN.
 """
 import os
 import time
