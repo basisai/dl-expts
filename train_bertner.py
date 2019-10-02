@@ -8,7 +8,7 @@ import time
 from bedrock_client.bedrock.api import BedrockApi
 import torch
 import torch.utils.data
-from pytorch_transformers import (
+from transformers import (
     BertTokenizer, BertForTokenClassification, AdamW, WarmupLinearSchedule)
 from seqeval.metrics import accuracy_score
 
@@ -173,7 +173,11 @@ def evaluate_model(model, val_dataloader, device):
         input_ids, input_mask, segment_ids, label_id = batch
 
         with torch.no_grad():
-            outputs = model(input_ids, segment_ids, input_mask, labels=label_id)
+            outputs = model(
+                input_ids,
+                token_type_ids=segment_ids,
+                attention_mask=input_mask,
+                labels=label_id)
             loss, logits = outputs[:2]
 
         val_loss += loss.item()
@@ -259,7 +263,11 @@ def train_model(train_features, val_features, device):
             batch = tuple(t.to(device) for t in batch)
             input_ids, input_mask, segment_ids, label_id = batch
             # forward pass
-            outputs = model(input_ids, segment_ids, input_mask, label_id)
+            outputs = model(
+                input_ids,
+                token_type_ids=segment_ids,
+                attention_mask=input_mask,
+                labels=label_id)
             loss = outputs[0]
             if ACCUMULATION_STEPS > 1:
                 loss = loss / ACCUMULATION_STEPS

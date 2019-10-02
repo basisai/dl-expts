@@ -8,7 +8,7 @@ from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler
 
 import torch
-from pytorch_transformers import BertTokenizer, BertForTokenClassification
+from transformers import BertTokenizer, BertForTokenClassification
 from jieba import cut
 
 from train_bertner import convert_examples_to_features, whitespace_punctuation, InputExample
@@ -25,7 +25,7 @@ BERT_TOKENIZER = BertTokenizer.from_pretrained(MODEL_NAME, do_lower_case=False)
 
 MODEL = BertForTokenClassification.from_pretrained(
     MODEL_NAME, num_labels=NUM_LABELS)
-MODEL.load_state_dict(torch.load("/artefact/bert_pytorch.bin"))
+MODEL.load_state_dict(torch.load("/artefact/bert_pytorch.bin", map_location=torch.device("cpu")))
 for param in MODEL.parameters():
     param.requires_grad = False
 MODEL.eval()
@@ -51,7 +51,11 @@ def predict(text, lang=None, model=MODEL, tokenizer=BERT_TOKENIZER):
     sam_segment_ids = torch.tensor([f.segment_ids for f in sam_features], dtype=torch.long)
 
     with torch.no_grad():
-        logits = model(sam_input_ids, sam_segment_ids, sam_input_mask, labels=None)[0]
+        logits = model(
+            sam_input_ids,
+            token_type_ids=sam_segment_ids,
+            attention_mask=sam_input_mask,
+            labels=None)[0]
 
     indices = torch.argmax(logits, dim=2).detach().numpy()[0]
     mask = sam_features[0].input_mask
@@ -76,7 +80,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         """Returns a re-ranked list of items given features."""
-        content_length = int(self.headers['Content-Length'])
+        content_length = int(self.headers["Content-Length"])
         post_data = self.rfile.read(content_length)
         self.send_response(HTTPStatus.OK)
         self.end_headers()
