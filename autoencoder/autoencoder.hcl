@@ -2,7 +2,7 @@ version = "1.0"
 
 train {
     image = "python:3.7"
-    install = ["pip3 install -r requirements_tensorflow.txt && pip3 install tensorflow==1.14.0"]
+    install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt"]
     script = [{sh = ["python3 train_autoencoder.py"]}]
 
     parameters {
@@ -18,8 +18,8 @@ train {
 batch_score {
     image = "python:3.7"
     install = [
-        "pip3 install -r requirements_tensorflow.txt",
-        "pip3 install tensorflow==1.14.0 neptune-client==0.4.8 Pillow==6.1.0 psutil==5.6.3"
+        "pip3 install --upgrade pip && pip3 install -r requirements.txt",
+        "pip3 install neptune-client==0.4.92 Pillow==6.1.0 psutil==5.6.3"
     ]
     script = [{sh = ["python3 batch_score_autoencoder.py"]}]
 

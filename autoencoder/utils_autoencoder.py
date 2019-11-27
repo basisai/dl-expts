@@ -50,7 +50,7 @@ def loss_plot(history, output_path=None):
 def compute_mse(model, x_data):
     """Compute mse between actual time series and prediction."""
     preds = np.squeeze(model.predict(np.expand_dims(x_data, axis=2)))
-    scores = np.linalg.norm(x_data - preds, axis=-1)
+    scores = np.sum((x_data - preds) ** 2, axis=1) / x_data.shape[1]
     return scores, preds
 
 
