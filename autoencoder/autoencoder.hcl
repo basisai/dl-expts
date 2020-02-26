@@ -6,8 +6,8 @@ train {
         install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt"]
         script = [{sh = ["python3 train_autoencoder.py"]}]
         resources {
-            cpu = "1"
-            memory = "6G"
+            cpu = "2"
+            memory = "4G"
         }
     }
 
@@ -30,11 +30,11 @@ batch_score {
         ]
         script = [{sh = ["python3 batch_score_autoencoder.py"]}]
         resources {
-            cpu = "1"
-            memory = "6G"
+            cpu = "2"
+            memory = "4G"
         }
     }
-    
+
     secrets = [
         "NEPTUNE_API_TOKEN",
         "NEPTUNE_PROJECT"

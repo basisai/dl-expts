@@ -9,7 +9,7 @@ from bedrock_client.bedrock.api import BedrockApi
 import torch
 import torch.utils.data
 from transformers import (
-    BertTokenizer, BertForTokenClassification, AdamW, WarmupLinearSchedule)
+    BertTokenizer, BertForTokenClassification, AdamW, get_linear_schedule_with_warmup)
 from seqeval.metrics import accuracy_score
 
 MODEL_NAME = "bert-base-multilingual-cased"
@@ -226,13 +226,8 @@ def get_dataloader(data_features, batch_size, shuffle=False, drop_last=False):
     return data_dataloader
 
 
-def train_model(train_features, val_features, device):
+def train_model(train_features, val_features, model, device):
     """Train model."""
-    model = BertForTokenClassification.from_pretrained(
-        MODEL_NAME, num_labels=NUM_LABELS)
-    model.zero_grad()
-    model.to(device)
-
     max_grad_norm = 1.0
     param_optimizer = list(model.named_parameters())
     no_decay = ["bias", "LayerNorm.bias", "LayerNorm.weight"]
@@ -242,16 +237,19 @@ def train_model(train_features, val_features, device):
         {"params": [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
          "weight_decay": 0.0}
     ]
+
     num_total_steps = int(
         EPOCHS * len(train_features) / BATCH_SIZE / ACCUMULATION_STEPS)
     num_warmup_steps = WARMUP * num_total_steps
-    optimizer = AdamW(optimizer_grouped_parameters, lr=LR, correct_bias=False)
-    scheduler = WarmupLinearSchedule(
-        optimizer, warmup_steps=num_warmup_steps, t_total=num_total_steps)
+    optimizer = AdamW(optimizer_grouped_parameters, lr=LR,
+                      correct_bias=False)  # To reproduce BertAdam specific behavior set correct_bias=False
+    scheduler = get_linear_schedule_with_warmup(
+        optimizer, num_warmup_steps, num_total_steps)  # PyTorch scheduler
 
     train_dataloader = get_dataloader(train_features, BATCH_SIZE, shuffle=True)
     val_dataloader = get_dataloader(val_features, BATCH_SIZE)
 
+    model.zero_grad()
     for epoch in range(EPOCHS):
         # TRAIN loop
         start = time.time()
@@ -279,13 +277,13 @@ def train_model(train_features, val_features, device):
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
 
             tr_loss += loss.item()
-            nb_tr_steps += 1
 
             # update parameters
             if (step + 1) % ACCUMULATION_STEPS == 0:
+                nb_tr_steps += 1
                 optimizer.step()
                 scheduler.step()
-                optimizer.zero_grad()
+                optimizer.zero_grad()  # same as model.zero_grad()
 
         print("Epoch {}: Train loss = {}".format(epoch, tr_loss / nb_tr_steps))
         print("\tTime taken = {:.2f} mins".format((time.time() - start) / 60))
@@ -329,7 +327,9 @@ def main():
         val_examples, LABEL_LIST, MAX_SEQUENCE_LENGTH, bert_tokenizer)
 
     print("\nTrain")
-    train_model(train_features, val_features, device)
+    model = BertForTokenClassification.from_pretrained(MODEL_NAME, num_labels=NUM_LABELS)
+    model.to(device)
+    train_model(train_features, val_features, model, device)
 
 
 if __name__ == "__main__":
