@@ -5,7 +5,7 @@ leven==1.0.4
 mxboard==0.1.0
 mxnet==1.6.0
 opencv-python==4.2.0.32
-pillow=7.0.0
+pillow==7.0.0
 scaremoses==0.0.38
 scikit-image==0.16.2
 streamlit==0.56.0

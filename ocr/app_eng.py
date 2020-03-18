@@ -20,50 +20,21 @@ from ocr.handwriting_line_recognition import (
 with zipfile.ZipFile("/artefact/models.zip", "r") as zip_ref:
     zip_ref.extractall("/artefact/models/")
 
+WORD_SEGMENTATION_MODEL = "/artefact/models/word_segmentation2.params"
+HANDWRITING_RECOGNITION_MODEL = "/artefact/models/handwriting_line8.params"
+DENOISER_MODEL = "/artefact/models/denoiser2.params"
+
 FEATURE_LEN = 150
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()
-
-word_segmentation_net = WordSegmentationNet(2, ctx=ctx)
-word_segmentation_net.load_parameters("/artefact/models/word_segmentation2.params")
-word_segmentation_net.hybridize()
-
-handwriting_line_recognition_net = HandwritingRecognitionNet(
-    rnn_hidden_states=512, rnn_layers=2, ctx=ctx, max_seq_len=160)
-handwriting_line_recognition_net.load_parameters("/artefact/models/handwriting_line8.params", ctx=ctx)
-handwriting_line_recognition_net.hybridize()
-
-denoiser = Denoiser(alphabet_size=len(ALPHABET),
-                    max_src_length=FEATURE_LEN,
-                    max_tgt_length=FEATURE_LEN,
-                    num_heads=16,
-                    embed_size=256,
-                    num_layers=2)
-denoiser.load_parameters("/artefact/models/denoiser2.params", ctx=ctx)
-denoiser.hybridize(static_alloc=True)
-
-language_model, vocab = nlp.model.big_rnn_lm_2048_512(dataset_name="gbw",
-                                                      pretrained=True,
-                                                      ctx=ctx)
-moses_tokenizer = nlp.data.SacreMosesTokenizer()
-moses_detokenizer = nlp.data.SacreMosesDetokenizer()
-
-beam_sampler = nlp.model.BeamSearchSampler(beam_size=20,
-                                           decoder=denoiser.decode_logprob,
-                                           eos_id=EOS,
-                                           scorer=nlp.model.BeamSearchScorer(),
-                                           max_length=150)
-
-generator = SequenceGenerator(beam_sampler,
-                              language_model,
-                              vocab,
-                              ctx,
-                              moses_tokenizer,
-                              moses_detokenizer)
 
 
 @st.cache()
 def segment(paragraph_segmented_image):
     # Word segmentation
+    word_segmentation_net = WordSegmentationNet(2, ctx=ctx)
+    word_segmentation_net.load_parameters(WORD_SEGMENTATION_MODEL)
+    word_segmentation_net.hybridize()
+
     min_c = 0.1
     overlap_thres = 0.1
     topk = 600
@@ -82,8 +53,13 @@ def get_arg_max(prob):
     return decoder_handwriting(arg_max)[0]
 
 
-@st.cache()
+@st.cache(suppress_st_warning=True)
 def recognize(line_images):
+    handwriting_line_recognition_net = HandwritingRecognitionNet(
+        rnn_hidden_states=512, rnn_layers=2, ctx=ctx, max_seq_len=160)
+    handwriting_line_recognition_net.load_parameters(HANDWRITING_RECOGNITION_MODEL, ctx=ctx)
+    handwriting_line_recognition_net.hybridize()
+
     line_image_size = (60, 800)
     form_character_prob = []
     for i, line_image in enumerate(line_images):
@@ -99,7 +75,7 @@ def recognize(line_images):
     return decoded_lines_am
 
 
-def get_denoised(text):
+def get_denoised(text, denoiser, generator):
     """Denoise output."""
     src_seq, src_valid_length = encode_char(text)
     src_seq = mx.nd.array([src_seq], ctx=ctx)
@@ -112,12 +88,38 @@ def get_denoised(text):
     return output.strip()
 
 
-@st.cache()
+@st.cache(suppress_st_warning=True)
 def denoise(decoded_lines_am):
+    denoiser = Denoiser(alphabet_size=len(ALPHABET),
+                        max_src_length=FEATURE_LEN,
+                        max_tgt_length=FEATURE_LEN,
+                        num_heads=16,
+                        embed_size=256,
+                        num_layers=2)
+    denoiser.load_parameters(DENOISER_MODEL, ctx=ctx)
+    denoiser.hybridize(static_alloc=True)
+
+    beam_sampler = nlp.model.BeamSearchSampler(beam_size=20,
+                                               decoder=denoiser.decode_logprob,
+                                               eos_id=EOS,
+                                               scorer=nlp.model.BeamSearchScorer(),
+                                               max_length=150)
+
+    language_model, vocab = nlp.model.big_rnn_lm_2048_512(dataset_name="gbw",
+                                                          pretrained=True,
+                                                          ctx=ctx)
+
+    generator = SequenceGenerator(beam_sampler,
+                                  language_model,
+                                  vocab,
+                                  ctx,
+                                  nlp.data.SacreMosesTokenizer(),
+                                  nlp.data.SacreMosesDetokenizer())
+
     progress_bar = st.progress(0)
     decoded_lines = []
     for j, decoded_line_am in enumerate(decoded_lines_am):
-        decoded_lines.append(get_denoised(decoded_line_am))
+        decoded_lines.append(get_denoised(decoded_line_am, denoiser, generator))
         progress_bar.progress(int((j + 1) / len(decoded_lines_am) * 100))
     decoded_text = ' '.join(decoded_lines)
     return decoded_text
