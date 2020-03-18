@@ -18,7 +18,7 @@ from ocr.handwriting_line_recognition import (
 
 
 with zipfile.ZipFile("/artefact/models.zip", "r") as zip_ref:
-    zip_ref.extractall("/artefact/models/")
+    zip_ref.extractall("/artefact/")
 
 WORD_SEGMENTATION_MODEL = "/artefact/models/word_segmentation2.params"
 HANDWRITING_RECOGNITION_MODEL = "/artefact/models/handwriting_line8.params"
