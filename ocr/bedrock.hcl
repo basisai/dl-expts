@@ -22,7 +22,7 @@ train {
 
 serve{
     image = "python:3.7"
-    install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt && wget https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/big_rnn_lm_2048_512_gbw-6bb3e991.zip && unzip big_rnn_lm_2048_512_gbw-6bb3e991.zip -d /root/.mxnet/models/"]
+    install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt"]
     script = [
         {sh = ["streamlit run app_eng.py --server.headless true --server.enableCORS=false --server.port ${BEDROCK_SERVER_PORT}"]}
     ]
