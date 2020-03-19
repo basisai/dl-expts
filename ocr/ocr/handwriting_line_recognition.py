@@ -129,8 +129,8 @@ class Network(gluon.HybridBlock):
             The body network for feature extraction based on resnet
         '''
         
-        pretrained = resnet34_v1(pretrained=True, ctx=self.ctx, root="~/gluon_models/")
-        pretrained_2 = resnet34_v1(pretrained=True, ctx=mx.cpu(0), root="~/gluon_models/")
+        pretrained = resnet34_v1(pretrained=True, ctx=self.ctx)
+        pretrained_2 = resnet34_v1(pretrained=True, ctx=mx.cpu(0))
         first_weights = pretrained_2.features[0].weight.data().mean(axis=1).expand_dims(axis=1)
         # First weights could be replaced with individual channels.
         
