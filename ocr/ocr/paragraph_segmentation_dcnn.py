@@ -84,7 +84,7 @@ class SegmentationNetwork(gluon.nn.HybridBlock):
     def __init__(self, p_dropout = 0.5, ctx=mx.cpu()):
         super(SegmentationNetwork, self).__init__()
 
-        pretrained = gluon.model_zoo.vision.resnet34_v1(pretrained=True, ctx=ctx)
+        pretrained = gluon.model_zoo.vision.resnet34_v1(pretrained=True, ctx=ctx, root="~/gluon_models/")
         first_weights = pretrained.features[0].weight.data().mean(axis=1).expand_dims(axis=1)
 
         body = gluon.nn.HybridSequential(prefix="SegmentationNetwork_")

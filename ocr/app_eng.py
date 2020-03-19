@@ -97,7 +97,8 @@ def load_denoiser(ctx):
 
     language_model, vocab = nlp.model.big_rnn_lm_2048_512(dataset_name="gbw",
                                                           pretrained=True,
-                                                          ctx=ctx)
+                                                          ctx=ctx,
+                                                          root="~/gluon_models/")
 
     generator = SequenceGenerator(beam_sampler,
                                   language_model,

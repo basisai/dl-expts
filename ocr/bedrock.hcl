@@ -22,7 +22,7 @@ train {
 
 serve{
     image = "python:3.7"
-    install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt"]
+    install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt && wget https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/big_rnn_lm_2048_512_gbw-6bb3e991.zip && unzip big_rnn_lm_2048_512_gbw-6bb3e991.zip -d ~/gluon_models/ && wget https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet34_v1-48216ba9.zip && unzip resnet34_v1-48216ba9.zip -d ~/gluon_models/ && wget https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/dataset/vocab/gbw-ebb1a287.zip && unzip gbw-ebb1a287.zip -d ~/gluon_models/"]
     script = [
         {sh = ["streamlit run app_eng.py --server.headless true --server.enableCORS=false --server.port ${BEDROCK_SERVER_PORT}"]}
     ]
