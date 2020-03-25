@@ -24,22 +24,39 @@ def levenshtein(u, v):
     return curr[len(v)], curr_ops[len(v)]
 
 
-def score(ref, hyp):
+def scores(ref, hyp):
     cer_s, cer_i, cer_d, cer_n = 0, 0, 0, 0
     wer_s, wer_i, wer_d, wer_n = 0, 0, 0, 0
     for n in range(len(ref)):
         # update CER statistics
-        _, (s, i, d) = levenshtein(ref[n], hyp[n])
+        _, (s, d, i) = levenshtein(ref[n], hyp[n])
         cer_s += s
-        cer_i += i
         cer_d += d
+        cer_i += i
         cer_n += len(ref[n])
         # update WER statistics
-        _, (s, i, d) = levenshtein(ref[n].split(), hyp[n].split())
+        _, (s, d, i) = levenshtein(ref[n].split(), hyp[n].split())
         wer_s += s
-        wer_i += i
         wer_d += d
+        wer_i += i
         wer_n += len(ref[n].split())
 
     if cer_n > 0:
-        return (cer_s + cer_i + cer_d) / cer_n, (wer_s + wer_i + wer_d) / wer_n
+        return (cer_s + cer_d + cer_i) / cer_n, (wer_s + wer_d + wer_i) / wer_n
+
+
+def cer_scores(ref, hyp):
+    # CER statistics
+    _, (cer_s, cer_d, cer_i) = levenshtein(ref, hyp)
+    cer_n = len(ref)
+    if cer_n > 0:
+        return cer_s / cer_n, cer_d / cer_n, cer_i / cer_n
+
+
+def wer_scores(ref, hyp):
+    # WER statistics
+    _, (wer_s, wer_d, wer_i) = levenshtein(ref.split(), hyp.split())
+    wer_n = len(ref.split())
+
+    if wer_n > 0:
+        return wer_s / wer_n, wer_d / wer_n, wer_i / wer_n

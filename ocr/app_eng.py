@@ -1,14 +1,15 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import gluonnlp as nlp
 import mxnet as mx
 import numpy as np
 import streamlit as st
-import zipfile
 from PIL import Image
 
 from ocr.utils.word_to_line import sort_bbs_line_by_line, crop_line_images
 from ocr.utils.encoder_decoder import Denoiser, ALPHABET, encode_char, EOS, BOS
 from ocr.utils.denoiser_utils import SequenceGenerator
-from ocr.utils.cer_wer import score
+from ocr.utils.cer_wer import cer_scores, wer_scores
 from ocr.word_and_line_segmentation import SSD as WordSegmentationNet, predict_bounding_boxes
 from ocr.handwriting_line_recognition import (
     Network as HandwritingRecognitionNet,
@@ -45,7 +46,7 @@ def segment(paragraph_segmented_image, ctx):
     # Line segmentation
     line_bbs = sort_bbs_line_by_line(predicted_words_bbs, y_overlap=0.4)
     line_images = crop_line_images(paragraph_segmented_image, line_bbs)
-    return line_images
+    return line_images, line_bbs
 
 
 @st.cache(allow_output_mutation=True)
@@ -143,7 +144,19 @@ if uploaded_file is not None:
     image = np.asarray(img.convert("L"))
 
     st.write("\nSegmentation...")
-    line_images = segment(image, ctx)
+    line_images, line_bbs = segment(image, ctx)
+
+    fig, ax = plt.subplots(figsize=(12, 12))
+    ax.imshow(image, cmap='Greys_r')
+    ax.axis('off')
+    image_h, image_w = image.shape[-2:]
+    for line_bb in line_bbs:
+        (x, y, w, h) = line_bb
+        (x, y, w, h) = (x * image_w, y * image_h, w * image_w, h * image_h)
+
+        rect = patches.Rectangle((x, y), w, h, fill=False, color="r")
+        ax.add_patch(rect)
+    st.pyplot()
 
     st.write("\nHandwriting recognition...")
     decoded_lines_am = recognize(line_images, ctx)
@@ -160,6 +173,14 @@ if uploaded_file is not None:
     st.write(reference)
 
     if reference != "":
-        scores = score([reference], [decoded_text])
-        st.write(f"CER: {100 * scores[0]:.2f}%")
-        st.write(f"WER: {100 * scores[1]:.2f}%")
+        cer_s, cer_d, cer_i = cer_scores(reference, decoded_text)
+        st.write(f"Overall CER: {100 * (cer_s + cer_d + cer_i):.2f}%")
+        st.write(f"substitution error = {100 * cer_s:.2f}%")
+        st.write(f"deletion error = {100 * cer_d:.2f}%")
+        st.write(f"insertion error = {100 * cer_i:.2f}%")
+
+        wer_s, wer_d, wer_i = wer_scores(reference, decoded_text)
+        st.write(f"Overall WER: {100 * (wer_s + wer_d + wer_i):.2f}%")
+        st.write(f"substitution error = {100 * wer_s:.2f}%")
+        st.write(f"deletion error = {100 * wer_d:.2f}%")
+        st.write(f"insertion error = {100 * wer_i:.2f}%")
