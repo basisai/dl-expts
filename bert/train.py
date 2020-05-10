@@ -4,6 +4,7 @@ Script to train model.
 import logging
 import time
 
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from transformers import (
@@ -14,6 +15,7 @@ from bedrock_client.bedrock.api import BedrockApi
 
 from utils import load_data, convert_examples_to_features
 
+DATA_DIR = "gs://bedrock-sample/ner_data/"
 PRETRAINED_MODEL_NAME = "bert-base-multilingual-cased"
 MAX_SEQUENCE_LENGTH = 200
 LABEL_LIST = ["O", "PERSON", "ORGANIZATION", "LOCATION", "[CLS]", "[SEP]", "X"]
@@ -181,10 +183,10 @@ def train():
         print(f"  Found GPU at: {torch.cuda.get_device_name(0)}")
 
     print("\nLoad data")
-    train_examples = load_data("data/ner_train_data.txt")
+    train_examples = load_data(DATA_DIR + "ner_train_data.txt")
     print("  Training data size =", len(train_examples))
 
-    val_examples = load_data("data/ner_val_data.txt")
+    val_examples = load_data(DATA_DIR +"ner_val_data.txt")
     print("  Validation data size =", len(val_examples))
 
     print("\nTokenize")

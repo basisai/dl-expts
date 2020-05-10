@@ -3,6 +3,19 @@ Script containing commonly used functions.
 """
 import re
 
+import pandas as pd
+
+
+def load_data(file_path):
+    """Load data."""
+    df = pd.read_csv(file_path, sep="\t", names=["text", "id"])
+
+    data_examples = []
+    for i, raw_line in enumerate(df["text"].values):
+        line_split, tags = word_tagging(raw_line)
+        data_examples.append(InputExample(i, " ".join(line_split), label=tags))
+    return data_examples
+
 
 def whitespace_punctuation(s):
     """Add whitespace before punctuation."""
@@ -55,16 +68,6 @@ class InputExample:
         self.text_a = text_a
         self.text_b = text_b
         self.label = label
-
-
-def load_data(file_path):
-    """Load data."""
-    data_examples = []
-    with open(file_path, "r") as file:
-        for i, raw_line in enumerate(file):
-            line_split, tags = word_tagging(raw_line)
-            data_examples.append(InputExample(i, " ".join(line_split), label=tags))
-    return data_examples
 
 
 class InputFeatures:
