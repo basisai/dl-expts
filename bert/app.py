@@ -66,7 +66,7 @@ def main():
             headers.update({"X-Bedrock-Api-Token": token})
         
         response = requests.post(url, headers=headers, data=data)
-        
+
         text_split = response.json()["text_split"]
         tags = response.json()["tags"]
         st.text(print_text_with_tags(text_split, tags))

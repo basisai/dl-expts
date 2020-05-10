@@ -32,4 +32,3 @@ serve{
         WORKERS = "1"
     }
 }
-}
