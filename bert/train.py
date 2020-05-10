@@ -191,10 +191,8 @@ def train():
 
     print("\nTokenize")
     bert_tokenizer = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME, do_lower_case=False)
-    print("  Train examples")
     train_features = convert_examples_to_features(
         train_examples, LABEL_LIST, MAX_SEQUENCE_LENGTH, bert_tokenizer)
-    print("  Val examples")
     val_features = convert_examples_to_features(
         val_examples, LABEL_LIST, MAX_SEQUENCE_LENGTH, bert_tokenizer)
 
