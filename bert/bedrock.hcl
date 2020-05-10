@@ -6,12 +6,12 @@ train {
         install = [
             "pip3 install --upgrade pip",
             "pip3 install -r requirements-train.txt",
-            "pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html",
+            "pip3 install torch==1.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html",
         ]
         script = [{sh = ["python3 train.py"]}]
         resources {
             cpu = "2"
-            memory = "4G"
+            memory = "14G"
         }
     }
 }
@@ -21,7 +21,7 @@ serve{
     install = [
         "pip3 install --upgrade pip",
         "pip3 install -r requirements-serve.txt",
-        "pip3 install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html",
+        "pip3 install torch==1.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html",
     ]
     script = [
         {sh = [
