@@ -1,9 +1,1 @@
-bdrk==0.1.6
-numpy==1.18.1
-torch==1.4.0
-torchvision==0.5.0
-transformers==2.5.1
-seqeval==0.0.12
-gcsfs==0.6.0
-google-cloud==0.34.0
-jieba==0.42.1
+streamlit==0.58.0

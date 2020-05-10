@@ -1,0 +1,6 @@
+bdrk==0.2.0
+numpy==1.18.2
+transformers==2.9.0
+seqeval==0.0.12
+gcsfs==0.6.0
+google-cloud-storage==1.28.0
