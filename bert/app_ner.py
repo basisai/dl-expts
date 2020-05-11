@@ -23,7 +23,7 @@ def print_text_with_tags(text_split, tags):
     return " ".join(print_str)
 
     
-def main():
+def ner():
     # max_width = st.sidebar.slider("Set page width", 700, 1500, 1000, 20)
     # st.markdown(
     #     f"""
@@ -87,4 +87,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    ner()
