@@ -30,6 +30,23 @@ ACCUMULATION_STEPS = 1
 FINETUNED_MODEL_PATH = "/artefact/finetuned_bert.bin"
 
 
+def get_dataloader(data_features, batch_size, shuffle=False, drop_last=False):
+    """Output dataloader."""
+    data_input_ids = torch.tensor(
+        [f.input_ids for f in data_features], dtype=torch.long)
+    data_input_mask = torch.tensor(
+        [f.input_mask for f in data_features], dtype=torch.long)
+    data_segment_ids = torch.tensor(
+        [f.segment_ids for f in data_features], dtype=torch.long)
+    data_label_id = torch.tensor(
+        [f.label_id for f in data_features], dtype=torch.long)
+    data_dataset = torch.utils.data.TensorDataset(
+        data_input_ids, data_input_mask, data_segment_ids, data_label_id)
+    data_loader = DataLoader(
+        data_dataset, batch_size=batch_size, shuffle=shuffle, drop_last=drop_last)
+    return data_loader
+
+
 def evaluate_model(model, val_loader, device):
     """Evaluate model."""
     val_loss = 0
@@ -73,23 +90,6 @@ def evaluate_model(model, val_loader, device):
     return val_loss, val_acc, y_true, y_pred
 
 
-def get_dataloader(data_features, batch_size, shuffle=False, drop_last=False):
-    """Output dataloader."""
-    data_input_ids = torch.tensor(
-        [f.input_ids for f in data_features], dtype=torch.long)
-    data_input_mask = torch.tensor(
-        [f.input_mask for f in data_features], dtype=torch.long)
-    data_segment_ids = torch.tensor(
-        [f.segment_ids for f in data_features], dtype=torch.long)
-    data_label_id = torch.tensor(
-        [f.label_id for f in data_features], dtype=torch.long)
-    data_dataset = torch.utils.data.TensorDataset(
-        data_input_ids, data_input_mask, data_segment_ids, data_label_id)
-    data_loader = DataLoader(
-        data_dataset, batch_size=batch_size, shuffle=shuffle, drop_last=drop_last)
-    return data_loader
-
-
 def train_model(model, train_loader, val_loader, device):
     """Train model."""
     max_grad_norm = 1.0
@@ -102,8 +102,7 @@ def train_model(model, train_loader, val_loader, device):
          "weight_decay": 0.0}
     ]
 
-    num_total_steps = int(
-        EPOCHS * len(train_loader) / ACCUMULATION_STEPS)
+    num_total_steps = int(EPOCHS * len(train_loader) / ACCUMULATION_STEPS)
     num_warmup_steps = WARMUP * num_total_steps
     optimizer = AdamW(optimizer_grouped_parameters, lr=LR,
                       correct_bias=False)  # To reproduce BertAdam specific behavior set correct_bias=False
@@ -186,7 +185,7 @@ def train():
     train_examples = load_data(DATA_DIR + "ner_train_data.txt")
     print("  Training data size =", len(train_examples))
 
-    val_examples = load_data(DATA_DIR +"ner_val_data.txt")
+    val_examples = load_data(DATA_DIR + "ner_val_data.txt")
     print("  Validation data size =", len(val_examples))
 
     print("\nTokenize")

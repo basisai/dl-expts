@@ -80,7 +80,8 @@ class InputFeatures:
 
 
 # pylint: disable=too-many-locals
-def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer, print_examples=False):
+def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer,
+                                 print_examples=False):
     """Loads a data file into a list of `InputBatch`s."""
     label_map = {label: i for i, label in enumerate(label_list, 1)}
 
