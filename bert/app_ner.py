@@ -40,7 +40,7 @@ def ner():
     
     token = st.text_input("Input token.")
     
-    input_text = st.text_input("Input text.")
+    input_text = st.text_area("Input text.")
     zh = st.radio("Select 'Yes' if the input text is Chinese.", ["No", "Yes"])
     
     if input_text != "":
@@ -73,9 +73,15 @@ def ner():
     st.markdown(" ".join(_print), unsafe_allow_html=True)
 
     st.header("Samples:")
-    st.code("Mantan Gubernur DKI Jakarta Basuki Tjahaja Purnama atau Ahok menyatakan, dia heran Gubernur Anies "
-            "Baswedan menerbitkan surat izin mendirikan bangunan (IMB) untuk bangunan di Pulau D, pulau hasil "
-            "reklamasi, berdasarkan Peraturan Gubernur Nomor 206 Tahun 2016 yang dulu diteken Ahok.")
+    st.code("Ir. H. Joko Widodo atau Jokowi (lahir di Surakarta, Jawa Tengah, 21 Juni 1961; umur 58 tahun) "
+            "adalah Presiden ke-7 Indonesia yang mulai menjabat sejak 20 Oktober 2014. Ia terpilih bersama "
+            "Wakil Presiden Muhammad Jusuf Kalla dalam Pemilu Presiden 2014 dan kembali terpilih bersama "
+            "Wakil Presiden Ma'ruf Amin dalam Pemilu Presiden 2019. Jokowi pernah menjabat Gubernur DKI Jakarta "
+            "sejak 15 Oktober 2012 hingga 16 Oktober 2014 didampingi Basuki Tjahaja Purnama sebagai wakil gubernur. "
+            "Sebelumnya, ia adalah Wali Kota Surakarta (Solo), sejak 28 Juli 2005 hingga 1 Oktober 2012 didampingi "
+            "F.X. Hadi Rudyatmo sebagai wakil wali kota.[5] Dua tahun menjalani periode keduanya menjadi Wali Kota Solo, "
+            "Jokowi ditunjuk oleh partainya, Partai Demokrasi Indonesia Perjuangan (PDI-P), untuk bertarung dalam "
+            "pemilihan Gubernur DKI Jakarta berpasangan dengan Basuki Tjahaja Purnama (Ahok).")
 
     st.code("腾讯科技股份有限公司是中國大陸规模最大的互联网公司，1998年11月由马化腾、张志东、陈一丹、许晨晔、曾李青5位创始人共同创立，"
             "總部位於深圳南山区騰訊濱海大廈。腾讯业务拓展至社交、娱乐、金融、资讯、工具和平台等不同领域。目前，腾讯拥有中国大陸使用人数"
