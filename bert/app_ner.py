@@ -24,18 +24,6 @@ def print_text_with_tags(text_split, tags):
 
     
 def ner():
-    # max_width = 900
-    # st.markdown(
-    #     f"""
-    #     <style>
-    #     .reportview-container .main .block-container{{
-    #         max-width: {max_width}px;
-    #     }}
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
-
     st.title("Named Entity Recognition")
     
     token = st.text_input("Input token.")

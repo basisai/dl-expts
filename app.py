@@ -1,6 +1,7 @@
 import streamlit as st
 
 from bert.app_ner import ner
+from image_ocr.app_ocr import image_ocr
 from table_ocr.app_ocr import table_ocr
 # from handwriting_ocr_eng.app_ocr import handwriting_ocr
 
@@ -20,6 +21,7 @@ def main():
 
     select_page = st.sidebar.selectbox("Select demo", [
         "Named Entity Recognition",
+        "Image OCR",
         "Table OCR",
     ])
 
@@ -30,6 +32,8 @@ def main():
 #         handwriting_ocr()
     elif select_page == "Table OCR":
         table_ocr()
+    elif select_page == "Image OCR":
+        image_ocr()
 
 
 if __name__ == "__main__":

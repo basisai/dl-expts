@@ -20,18 +20,6 @@ def recognize(uploaded_file):
 
 
 def table_ocr():
-    # max_width = 900
-    # st.markdown(
-    #     f"""
-    #     <style>
-    #     .reportview-container .main .block-container{{
-    #         max-width: {max_width}px;
-    #     }}
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
-
     st.title("Table OCR Demo")
 
     uploaded_file = st.file_uploader("Upload a PDF.")
