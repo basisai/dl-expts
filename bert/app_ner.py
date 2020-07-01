@@ -24,7 +24,7 @@ def print_text_with_tags(text_split, tags):
 
     
 def ner():
-    # max_width = st.sidebar.slider("Set page width", 700, 1500, 1000, 20)
+    # max_width = 900
     # st.markdown(
     #     f"""
     #     <style>
@@ -35,13 +35,13 @@ def ner():
     #     """,
     #     unsafe_allow_html=True,
     # )
-    
+
     st.title("Named Entity Recognition")
     
     token = st.text_input("Input token.")
     
     input_text = st.text_area("Input text.")
-    zh = st.radio("Select 'Yes' if the input text is Chinese.", ["No", "Yes"])
+    zh = st.radio("Select 'Yes' if the text input is Chinese.", ["No", "Yes"])
     
     if input_text != "":
         st.subheader("Input:")
