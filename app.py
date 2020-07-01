@@ -19,8 +19,8 @@ def main():
     # )
 
     select_page = st.sidebar.selectbox("Select demo", [
-        "Table OCR",
         "Named Entity Recognition",
+        "Table OCR",
     ])
 
     if select_page == "Named Entity Recognition":
