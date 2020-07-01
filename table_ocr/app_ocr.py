@@ -1,19 +1,8 @@
 import os
 import tempfile
 
-import pdf2image
 import streamlit as st
 import tabula
-from pdf2image.exceptions import (
-    PDFInfoNotInstalledError,
-    PDFPageCountError,
-    PDFSyntaxError
-)
-
-
-@st.cache
-def convert_to_images(uploaded_file):
-    return pdf2image.convert_from_bytes(uploaded_file.read())
 
 
 @st.cache
@@ -47,15 +36,11 @@ def table_ocr():
 
     uploaded_file = st.file_uploader("Upload a PDF.")
     if uploaded_file is not None:
-        images = convert_to_images(uploaded_file)
         dfs = recognize(uploaded_file)
 
         page_num = 0
-        if len(images) > 1:
-            page_num = st.slider("Select page", 1, len(images), 1) - 1
-
-        st.subheader("Uploaded file")
-        st.image(images[page_num], use_column_width=True)
+        if len(dfs) > 1:
+            page_num = st.slider("Select page", 1, len(dfs), 1) - 1
 
         st.subheader("Output")
         st.dataframe(dfs[page_num])
