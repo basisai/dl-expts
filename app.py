@@ -3,6 +3,7 @@ import streamlit as st
 from bert.app_ner import ner
 from image_ocr.app_ocr import image_ocr
 from table_ocr.app_ocr import table_ocr
+from tf_pose_estimation.app_pose import pose_compare
 # from handwriting_ocr_eng.app_ocr import handwriting_ocr
 
     
@@ -23,6 +24,7 @@ def main():
         "Named Entity Recognition",
         "Image OCR",
         "Table OCR",
+        "Pose Estimator",
     ])
 
     if select_page == "Named Entity Recognition":
@@ -34,6 +36,8 @@ def main():
         table_ocr()
     elif select_page == "Image OCR":
         image_ocr()
+    elif select_page == "Pose Comparison":
+        pose_compare()
 
 
 if __name__ == "__main__":
