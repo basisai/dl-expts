@@ -21,9 +21,8 @@ def compute_log_metrics(y_true, y_pred):
     """Compute and log metrics."""
     acc = metrics.accuracy_score(y_true, y_pred)
     f1_score = metrics.f1_score(y_true, y_pred, average="weighted")
-    print("Evaluation\n"
-          f"  Accuracy          = {acc:.4f}\n"
-          f"  F1 score          = {f1_score:.6f}")
+    print(f"  Accuracy          = {acc:.4f}\n"
+          f"  F1 score          = {f1_score:.4f}")
 
     # Log metrics
     bedrock = BedrockApi(logging.getLogger(__name__))
@@ -36,13 +35,16 @@ def main():
     print("\nLoad data")
     data = pd.read_csv("gs://bedrock-sample/otto_data/otto_data.csv")
     data["feat_1"] = (data["feat_1"].values > 0).astype(int)  # convert to binary
-    print("  Train data shape:", data.shape)
+    data[TARGET] = data[TARGET].apply(lambda x: int(x[-1]) - 1)  # convert to int
+    print("  Data shape:", data.shape)
 
     train, valid = train_test_split(data, test_size=0.2, random_state=0)
     x_train = train[FEATURES]
     y_train = train[TARGET].values
+    print("  Train data shape:", x_train.shape)
     x_valid = valid[FEATURES]
     y_valid = valid[TARGET].values
+    print("  Valid data shape:", x_valid.shape)
 
     print("\nTrain model")
     lgb_clf = lgb.LGBMClassifier(
