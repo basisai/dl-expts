@@ -33,7 +33,7 @@ def compute_log_metrics(y_true, y_pred):
 
 def main():
     """Entry point to perform training."""
-    print("\nLoad train data")
+    print("\nLoad data")
     data = pd.read_csv("gs://bedrock-sample/otto_data/otto_data.csv")
     data["feat_1"] = (data["feat_1"].values > 0).astype(int)  # convert to binary
     print("  Train data shape:", data.shape)
@@ -59,8 +59,9 @@ def main():
     with open(OUTPUT_MODEL_PATH, "wb") as model_file:
         pickle.dump(lgb_clf, model_file)
 
+    print("\nCalculate and upload xafai")
     analyzer = (
-        ModelAnalyzer(lgb_clf, 'tree_model', model_type=ModelTypes.TREE)
+        ModelAnalyzer(lgb_clf, "tree_model", model_type=ModelTypes.TREE)
         .test_features(x_valid)
     )
     analyzer.fairness_config(CONFIG_FAI).test_labels(y_valid).test_inference(y_pred)
