@@ -19,8 +19,8 @@ OUTPUT_MODEL_PATH = "/artefact/model.pkl"
 
 def compute_log_metrics(y_true, y_pred):
     """Compute and log metrics."""
-    acc = metrics.accuracy_score(y_true, y_pred)
-    f1_score = metrics.f1_score(y_true, y_pred)
+    acc = metrics.accuracy_score(y_true, y_pred, average="weighted")
+    f1_score = metrics.f1_score(y_true, y_pred, average="weighted")
     print("Evaluation\n"
           f"  Accuracy          = {acc:.4f}\n"
           f"  F1 score          = {f1_score:.6f}")
