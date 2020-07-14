@@ -24,8 +24,9 @@ def print_text_with_tags(text_split, tags):
 
     
 def ner():
-    st.title("Named Entity Recognition")
-    
+    st.title("Named Entity Recognition Demo")
+
+    url = st.text_input("Input API URL.")
     token = st.text_input("Input token.")
     
     input_text = st.text_area("Input text.")
@@ -40,7 +41,6 @@ def ner():
             data["lang"] = "zh-cn"
         data = json.dumps(data)
 
-        url = "https://snowy-band-4038.pub.playground.bdrk.ai"
         headers = {"Content-Type": "application/json"}
         if token != "":
             headers.update({"X-Bedrock-Api-Token": token})

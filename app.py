@@ -4,6 +4,7 @@ from pathlib import Path
 import streamlit as st
 
 from bert.app_ner import ner
+from pneumonia.app_pneumonia import image_recognize
 from image_ocr.app_ocr import image_ocr
 from table_ocr.app_ocr import table_ocr
 from pose_estimation.app_pose import pose_compare
@@ -39,6 +40,7 @@ def main():
     select_page = st.sidebar.selectbox("Select demo", [
         "",
         "Named Entity Recognition",
+        "Chest X-ray Image Classification",
         "Image OCR",
         "Table OCR",
         "Pose Comparison",
@@ -50,15 +52,17 @@ def main():
         st.write("This app contains a series of demos. Select a demo in the left panel.")
     elif select_page == "Named Entity Recognition":
         ner()
-    elif select_page == "Handwriting Recognition for English":
-        st.write("*Under Construction*")
-#         handwriting_ocr()
+    elif select_page == "Chest X-ray Image Classification":
+        image_recognize()
     elif select_page == "Table OCR":
         table_ocr()
     elif select_page == "Image OCR":
         image_ocr()
     elif select_page == "Pose Comparison":
         pose_compare()
+    elif select_page == "Handwriting Recognition for English":
+        st.write("*Under Construction*")
+#         handwriting_ocr()
 
 
 if __name__ == "__main__":
