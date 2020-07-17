@@ -2,6 +2,9 @@ import pytesseract
 import streamlit as st
 from PIL import Image
 
+# TODO: does not work in heroku
+# TesseractNotFoundError: tesseract is not installed or it's not in your PATH
+
 
 @st.cache
 def recognize(img):

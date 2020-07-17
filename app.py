@@ -5,10 +5,10 @@ import streamlit as st
 
 from bert.app_ner import ner
 from pneumonia.app_pneumonia import image_recognize
-from image_ocr.app_ocr import image_ocr
-from table_ocr.app_ocr import table_ocr
 from pose_estimation.app_pose import pose_compare
 from sentiment.app_sentiment_demo import demo_sentiment_analyzer
+# from image_ocr.app_ocr import image_ocr
+# from table_ocr.app_ocr import table_ocr
 # from handwriting_ocr_eng.app_ocr import handwriting_ocr
 
 
@@ -44,8 +44,6 @@ def main():
         "Chest X-ray Image Classification",
         "Pose Comparison",
         "Sentiment Analysis",
-        "Image OCR",
-        "Table OCR",
     ])
 
     if select_page == "":
@@ -61,12 +59,14 @@ def main():
     elif select_page == "Sentiment Analysis":
         demo_sentiment_analyzer()
     elif select_page == "Table OCR":
-        table_ocr()
+        pass
+        # table_ocr()
     elif select_page == "Image OCR":
-        image_ocr()
+        pass
+        # image_ocr()
     elif select_page == "Handwriting Recognition for English":
         pass
-#         handwriting_ocr()
+        # handwriting_ocr()
 
 
 if __name__ == "__main__":

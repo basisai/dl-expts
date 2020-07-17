@@ -4,7 +4,9 @@ import tempfile
 import streamlit as st
 import tabula
 
-# TODO: add C
+# TODO: does not work in heroku
+# JavaNotFoundError: `java` command is not found from this Python process.
+# Please ensure Java is installed and PATH is set for `java`
 
 
 @st.cache
@@ -22,7 +24,7 @@ def recognize(uploaded_file):
 
 
 def table_ocr():
-    st.title("Table OCR Demo [WIP]")
+    st.title("Table OCR Demo")
 
     uploaded_file = st.file_uploader("Upload a PDF.")
     if uploaded_file is not None:

@@ -22,6 +22,23 @@ def print_text_with_tags(text_split, tags):
             print_str.append(word)
     return " ".join(print_str)
 
+
+@st.cache
+def predict(input_text, zh, url, token):
+    data = {"text": input_text}
+    if zh == "Yes":
+        data["lang"] = "zh-cn"
+    data = json.dumps(data)
+
+    headers = {"Content-Type": "application/json"}
+    if token != "":
+        headers.update({"X-Bedrock-Api-Token": token})
+
+    response = requests.post(url, headers=headers, data=data)
+    text_split = response.json()["text_split"]
+    tags = response.json()["tags"]
+    return text_split, tags
+
     
 def ner():
     st.title("Named Entity Recognition Demo")
@@ -32,23 +49,11 @@ def ner():
     input_text = st.text_area("Input text.")
     zh = st.radio("Select 'Yes' if the text input is Chinese.", ["No", "Yes"])
     
-    if input_text != "":
+    if input_text != "" and url != "":
         st.subheader("Input:")
         st.write(input_text)
 
-        data = {"text": input_text}
-        if zh == "Yes":
-            data["lang"] = "zh-cn"
-        data = json.dumps(data)
-
-        headers = {"Content-Type": "application/json"}
-        if token != "":
-            headers.update({"X-Bedrock-Api-Token": token})
-        
-        response = requests.post(url, headers=headers, data=data)
-
-        text_split = response.json()["text_split"]
-        tags = response.json()["tags"]
+        text_split, tags = predict(input_text, zh, url, token)
         output_text = print_text_with_tags(text_split, tags)
 
         st.subheader("Output:")

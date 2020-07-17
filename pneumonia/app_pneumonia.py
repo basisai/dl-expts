@@ -20,6 +20,21 @@ def encode_image(array, dtype=np.uint8):
     return base64.b64encode(np.asarray(array, dtype=dtype)).decode("utf-8")
 
 
+@st.cache
+def recognize(image, url, token):
+    img = np.asarray(image.convert("RGB"))
+    encoded_img = encode_image(img.ravel())
+    data = json.dumps({"encoded_image": encoded_img, "image_shape": img.shape})
+
+    headers = {"Content-Type": "application/json"}
+    if token != "":
+        headers.update({"X-Bedrock-Api-Token": token})
+
+    response = requests.post(url, headers=headers, data=data)
+    prob = response.json()["prob"]
+    return prob
+
+
 def image_recognize():
     st.title("Chest X-ray Image Classification Demo")
     
@@ -27,20 +42,10 @@ def image_recognize():
     token = st.text_input("Input token.")
 
     uploaded_file = st.file_uploader("Upload an image.")
-    if uploaded_file is not None:
+    if uploaded_file is not None and url != "":
         image = Image.open(uploaded_file)
 
-        img = np.asarray(image.convert("RGB"))
-        img_shape = img.shape
-        encoded_img = encode_image(img.ravel())
-        data = json.dumps({"encoded_image": encoded_img, "image_shape": img_shape})
-
-        headers = {"Content-Type": "application/json"}
-        if token != "":
-            headers.update({"X-Bedrock-Api-Token": token})
-        
-        response = requests.post(url, headers=headers, data=data)
-        prob = response.json()["prob"]
+        prob = recognize(image, url, token)
         st.subheader(f"Probability of having COVID-19 = {prob:.6f}")
         
         st.image(image, caption="Uploaded Image", use_column_width=True)
