@@ -4,6 +4,8 @@ import tempfile
 import streamlit as st
 import tabula
 
+# TODO: add C
+
 
 @st.cache
 def recognize(uploaded_file):
@@ -20,7 +22,7 @@ def recognize(uploaded_file):
 
 
 def table_ocr():
-    st.title("Table OCR Demo")
+    st.title("Table OCR Demo [WIP]")
 
     uploaded_file = st.file_uploader("Upload a PDF.")
     if uploaded_file is not None:

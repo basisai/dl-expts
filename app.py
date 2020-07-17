@@ -65,7 +65,7 @@ def main():
     elif select_page == "Image OCR":
         image_ocr()
     elif select_page == "Handwriting Recognition for English":
-        st.write("*Under Construction*")
+        pass
 #         handwriting_ocr()
 
 
