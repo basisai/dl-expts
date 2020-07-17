@@ -7,6 +7,7 @@ from bert.app_ner import ner
 from pneumonia.app_pneumonia import image_recognize
 from pose_estimation.app_pose import pose_compare
 from sentiment.app_sentiment_demo import demo_sentiment_analyzer
+from autoencoder.app_autoencoder import demo_anomaly_detection
 # from image_ocr.app_ocr import image_ocr
 # from table_ocr.app_ocr import table_ocr
 # from handwriting_ocr_eng.app_ocr import handwriting_ocr
@@ -44,6 +45,7 @@ def main():
         "Chest X-ray Image Classification",
         "Pose Comparison",
         "Sentiment Analysis",
+        "Anomaly Detection",
     ])
 
     if select_page == "":
@@ -58,6 +60,8 @@ def main():
         pose_compare()
     elif select_page == "Sentiment Analysis":
         demo_sentiment_analyzer()
+    elif select_page == "Anomaly Detection":
+        demo_anomaly_detection()
     elif select_page == "Table OCR":
         pass
         # table_ocr()

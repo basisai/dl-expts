@@ -71,6 +71,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # pyenv
 .python-version
@@ -109,3 +110,5 @@ venv.bak/
 # models
 bert/models/
 pneumonia/models/
+autoencoder/models/
+autoencoder/data/

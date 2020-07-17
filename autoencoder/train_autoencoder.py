@@ -1,5 +1,5 @@
 """
-Script to train CNN autoencoder.
+Script to train autoencoder.
 """
 import logging
 import os
@@ -14,7 +14,7 @@ from keras.layers import (
 from keras.callbacks import ModelCheckpoint
 from sklearn.preprocessing import StandardScaler
 
-from utils_autoencoder import (
+from utils import (
     compute_mse, compute_threshold, load_data, loss_plot, ts_plots, train_val_split)
 
 INPUT_TRAIN_FILE_PATH = os.getenv("INPUT_TRAIN_FILE_PATH")

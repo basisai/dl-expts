@@ -3,7 +3,10 @@ version = "1.0"
 train {
     step train {
         image = "python:3.7"
-        install = ["pip3 install --upgrade pip && pip3 install -r requirements.txt"]
+        install = [
+            "pip3 install --upgrade pip",
+            "pip3 install -r requirements.txt",
+        ]
         script = [{sh = ["python3 train_autoencoder.py"]}]
         resources {
             cpu = "2"
@@ -25,8 +28,9 @@ batch_score {
     step batch_score {
         image = "python:3.7"
         install = [
-            "pip3 install --upgrade pip && pip3 install -r requirements.txt",
-            "pip3 install neptune-client==0.4.105 Pillow==7.0.0 psutil==5.7.0"
+            "pip3 install --upgrade pip",
+            "pip3 install -r requirements.txt",
+            "pip3 install neptune-client==0.4.105 Pillow==7.0.0 psutil==5.7.0",
         ]
         script = [{sh = ["python3 batch_score_autoencoder.py"]}]
         resources {
