@@ -8,6 +8,7 @@ from pneumonia.app_pneumonia import image_recognize
 from image_ocr.app_ocr import image_ocr
 from table_ocr.app_ocr import table_ocr
 from pose_estimation.app_pose import pose_compare
+from sentiment.app_sentiment_demo import demo_sentiment_analyzer
 # from handwriting_ocr_eng.app_ocr import handwriting_ocr
 
 
@@ -41,9 +42,10 @@ def main():
         "",
         "Named Entity Recognition",
         "Chest X-ray Image Classification",
+        "Pose Comparison",
+        "Sentiment Analysis",
         "Image OCR",
         "Table OCR",
-        "Pose Comparison",
     ])
 
     if select_page == "":
@@ -54,12 +56,14 @@ def main():
         ner()
     elif select_page == "Chest X-ray Image Classification":
         image_recognize()
+    elif select_page == "Pose Comparison":
+        pose_compare()
+    elif select_page == "Sentiment Analysis":
+        demo_sentiment_analyzer()
     elif select_page == "Table OCR":
         table_ocr()
     elif select_page == "Image OCR":
         image_ocr()
-    elif select_page == "Pose Comparison":
-        pose_compare()
     elif select_page == "Handwriting Recognition for English":
         st.write("*Under Construction*")
 #         handwriting_ocr()
