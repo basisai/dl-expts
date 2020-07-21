@@ -1,69 +1,54 @@
-import codecs
+import base64
+import json
+import requests
 
 import numpy as np
 import pandas as pd
 import streamlit as st
 from PIL import Image
-from keras import backend as K
-
-from .utils import model08
 
 DATA_DIR = "chi_char_ocr/"
 IMG_SIZE = 96
-
-
-@st.cache
-def preprocess(raw_img):
-    img = np.asarray(raw_img.convert('L'))
-    img = np.expand_dims(img, 0)
-    img = np.expand_dims(img, 3)
-    img = img.astype(np.float32)
-    img /= 255.0
-    return img
-
-
-@st.cache
-def load_klasses():
-    with codecs.open(DATA_DIR + "models/labels.txt", "r", "UTF-8") as label_file:
-        klasses = [a.strip() for a in label_file.readlines()]
-    return klasses
-
-
-@st.cache(allow_output_mutation=True)
-def load_model(n_classes):
-    model = model08(IMG_SIZE, n_classes)
-    model.load_weights(DATA_DIR + "models/weights08.h5")
-    model._make_predict_function()
-    model.summary()  # included to make it visible when model is reloaded
-    session = K.get_session()
-    return model, session
-
-
-def rank_predictions(pred, klasses):
-    top_preds = pd.DataFrame({"Character": klasses, "Probability": pred * 100})
-    top_preds.sort_values("Probability", ascending=False, inplace=True, ignore_index=True)
-    return top_preds
-
-
 SAMPLES = [f"img{i}.png" for i in range(19)]
+
+
+def encode_image(array, dtype=np.uint8):
+    """Encode an array to base64 encoded string or bytes.
+    Args:
+        array: numpy.array
+        dtype
+    Returns:
+        base64 encoded string
+    """
+    if array is None:
+        return None
+    return base64.b64encode(np.asarray(array, dtype=dtype)).decode("utf-8")
+
+
+@st.cache
+def recognize(image, url, token):
+    img = np.asarray(image.convert("RGB"))
+    encoded_img = encode_image(img.ravel())
+    data = json.dumps({"encoded_image": encoded_img, "image_shape": img.shape})
+
+    headers = {"Content-Type": "application/json"}
+    if token != "":
+        headers.update({"X-Bedrock-Api-Token": token})
+
+    response = requests.post(url, headers=headers, data=data)
+    prob = response.json()["prob"]
+    return prob
+
+
+@st.cache
+def load_results():
+    return pd.read_csv(DATA_DIR + "results.csv")
 
 
 def chi_char_ocr():
     st.title("Handwritten Simplified Chinese Character Recognition Demo")
 
-    klasses = load_klasses()
-    model, session = load_model(len(klasses))
-
-    # select_sample = st.selectbox(
-    #     "Select a sample image or upload an image.",
-    #     ["", "Upload an image"] + [f"ex{i + 1}" for i in range(len(SAMPLES))],
-    # )
-
-    # uploaded_file = None
-    # if select_sample != "" and select_sample != "Upload an image":
-    #     uploaded_file = "samples/" + SAMPLES[int(select_sample[2:]) - 1]
-    # elif select_sample == "Upload an image":
-    #     uploaded_file = st.file_uploader("Upload an image.")
+    results = load_results()
 
     select = st.selectbox("", ["Select a sample image", "Upload an image"])
 
@@ -73,26 +58,29 @@ def chi_char_ocr():
         uploaded_file = None
         if select_idx > 0:
             uploaded_file = DATA_DIR + "samples/" + SAMPLES[int(select_idx) - 1]
+
+        if uploaded_file is not None:
+            st.subheader("Image")
+            raw_img = Image.open(uploaded_file)
+            st.image(raw_img, use_column_width=False)
+
+            top_preds = results.query(f"ex == 'ex{int(select_idx) - 1}'")[["Character", "Probability"]]
+            character = top_preds["Character"].iloc[0]
+            st.subheader(f"Output: **`{character}`**")
+            st.write("Top 10")
+            st.write(top_preds.iloc[:10])
+
     else:
+        url = st.text_input("Input API URL.")
+        token = st.text_input("Input token.")
         uploaded_file = st.file_uploader("Upload an image.")
 
-    if uploaded_file is not None:
-        st.subheader("Image")
-        raw_img = Image.open(uploaded_file)
-        st.image(raw_img, use_column_width=False)
+        if uploaded_file is not None and url != "":
+            raw_img = Image.open(uploaded_file)
+            st.image(raw_img, use_column_width=False)
 
-        # Convert image to numpy.ndarray
-        img = preprocess(raw_img)
-
-        with session.as_default():
-            pred = model.predict(img)[0]
-
-        top_preds = rank_predictions(pred, klasses)
-
-        c, p = top_preds.iloc[0].values
-        st.subheader(f"Output: **`{c}`**")
-        st.write("Top 10")
-        st.write(top_preds.iloc[:10])
+            character = recognize(raw_img, url, token)
+            st.subheader(f"Output: **`{character}`**")
 
 
 if __name__ == "__main__":

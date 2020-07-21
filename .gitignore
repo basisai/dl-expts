@@ -112,3 +112,4 @@ bert/models/
 pneumonia/models/
 autoencoder/models/
 autoencoder/data/
+chi_char_ocr/models/
