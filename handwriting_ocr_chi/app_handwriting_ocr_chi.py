@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 from PIL import Image
 
-DATA_DIR = "chi_char_ocr/"
+DATA_DIR = "handwriting_ocr_chi/"
 IMG_SIZE = 96
 SAMPLES = [f"img{i}.png" for i in range(19)]
 

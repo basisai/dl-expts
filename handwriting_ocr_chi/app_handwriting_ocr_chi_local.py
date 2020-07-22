@@ -8,7 +8,7 @@ from keras import backend as K
 
 from .utils import model08
 
-DATA_DIR = "chi_char_ocr/"
+DATA_DIR = "handwriting_ocr_chi/"
 IMG_SIZE = 96
 SAMPLES = [f"img{i}.png" for i in range(19)]
 
