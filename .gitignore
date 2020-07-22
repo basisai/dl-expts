@@ -113,3 +113,4 @@ pneumonia/models/
 autoencoder/models/
 autoencoder/data/
 handwriting_ocr_chi/models/
+handwriting_ocr_eng/models/

@@ -9,9 +9,9 @@ from pose_estimation.app_pose import pose_compare
 from sentiment.app_sentiment_demo import demo_sentiment_analyzer
 from autoencoder.app_autoencoder import demo_anomaly_detection
 from handwriting_ocr_chi.app_handwriting_ocr_chi import chi_char_ocr
+from handwriting_ocr_eng.app_handwriting_ocr_eng import eng_ocr
 # from image_ocr.app_ocr import image_ocr
 # from table_ocr.app_ocr import table_ocr
-# from handwriting_ocr_eng.app_handwriting_ocr_eng import eng_ocr
 
 
 def uri_encode_path(path, mime="image/png"):
@@ -46,6 +46,7 @@ def main():
         "Chest X-ray Image Classification",
         "Pose Comparison",
         "Sentiment Analysis",
+        "Handwriting Recognition for English",
         "Handwriting Recognition for Chinese",
         "Anomaly Detection",
     ])
@@ -54,6 +55,7 @@ def main():
         add_header("assets/logo.png")
         st.title("Demos")
         st.write("This app contains a series of demos. Select a demo in the left panel.")
+        st.markdown("Source code: [dl-expts](https://github.com/basisai/dl-expts)")
     elif select_page == "Named Entity Recognition":
         ner()
     elif select_page == "Chest X-ray Image Classification":
@@ -73,8 +75,7 @@ def main():
     elif select_page == "Handwriting Recognition for Chinese":
         chi_char_ocr()
     elif select_page == "Handwriting Recognition for English":
-        pass
-        # handwriting_ocr()
+        eng_ocr()
 
 
 if __name__ == "__main__":

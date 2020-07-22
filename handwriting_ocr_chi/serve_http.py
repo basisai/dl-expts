@@ -79,7 +79,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["POST"])
 def get_prob():
-    """Returns probability."""
+    """Returns most probable character and its probability."""
     top_pred = predict(request.json)
     return {"character": top_pred[0], "prob": top_pred[1]}
 

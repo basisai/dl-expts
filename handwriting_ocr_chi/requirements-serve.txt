@@ -1,0 +1,6 @@
+bdrk==0.2.0
+numpy==1.18.2
+pandas==1.0.3
+keras==2.3.1
+flask==1.1.1
+gunicorn==19.9.0
