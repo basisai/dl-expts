@@ -8,10 +8,10 @@ from pneumonia.app_pneumonia import image_recognize
 from pose_estimation.app_pose import pose_compare
 from sentiment.app_sentiment_demo import demo_sentiment_analyzer
 from autoencoder.app_autoencoder import demo_anomaly_detection
-from chi_char_ocr.app_chi_char_ocr import chi_char_ocr
+from handwriting_ocr_chi.app_handwriting_ocr_chi import chi_char_ocr
 # from image_ocr.app_ocr import image_ocr
 # from table_ocr.app_ocr import table_ocr
-# from handwriting_ocr_eng.app_ocr import handwriting_ocr
+# from handwriting_ocr_eng.app_handwriting_ocr_eng import eng_ocr
 
 
 def uri_encode_path(path, mime="image/png"):
@@ -46,7 +46,7 @@ def main():
         "Chest X-ray Image Classification",
         "Pose Comparison",
         "Sentiment Analysis",
-        "Handwritten Chinese Recognition",
+        "Handwriting Recognition for Chinese",
         "Anomaly Detection",
     ])
 
@@ -70,7 +70,7 @@ def main():
     elif select_page == "Image OCR":
         pass
         # image_ocr()
-    elif select_page == "Handwritten Chinese Recognition":
+    elif select_page == "Handwriting Recognition for Chinese":
         chi_char_ocr()
     elif select_page == "Handwriting Recognition for English":
         pass
