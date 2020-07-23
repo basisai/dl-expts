@@ -1,6 +1,6 @@
 {
     "ex1": {
-        "reference": "Because she was second best. The others came back\nto the table, all of them making a fuss of her and at once\nshe felt happier. Gay loved them for their warm sympathy,\nknowing that they were real friends, even if they were new ones.\n&quot;That is a pretty dress,&quot; Lilyan commented, obviously sensing\nGay's distress and in a way that Doc, as a man, could not\nunderstand, knowing that Gay was as much ashamed\nfor Gavin at the way he was behaving as she\nwas hurt for herself.\n",
+        "reference": "Because she was second best. The others came back\nto the table, all of them making a fuss of her and at once\nshe felt happier. Gay loved them for their warm sympathy,\nknowing that they were real friends, even if they were new ones.\n\"That is a pretty dress,\" Lilyan commented, obviously sensing\nGay's distress and in a way that Doc, as a man, could not\nunderstand, knowing that Gay was as much ashamed\nfor Gavin at the way he was behaving as she\nwas hurt for herself.",
         "intermediate": [
             "Because she was second best. The others came back to",
             "The table, all of then matis a fue of her and at once she",
@@ -16,7 +16,7 @@
         "prediction": "Because she was second best. The others came back to\nThe table, all of them that is a fue of her and at once she\nfelt happier. Gay allowed them for their was simply,\nknows that they were real, even if they were new ones\n\"That is a pretty draw,\" Listen commented, obviously seeing\n\nGray's dishes and in a way that one, as a son, could not\nunderstand, knowing that Gay was as much ashamed\nFor gain at the way he was Behaving as she\nwas hart for herself"
     },
     "ex2": {
-        "reference": "&quot;Hello, Dad!&quot; Bill called. &quot;I hope you\nweren't worried. We're going to\ndrag the boat ashore and turn\nher over. She has a foot of\nwater in her. I wouldn't be\nsurprised if we broke all\nspeed records on the way in.\nYes sir, I am slightly wet, and\nBuck would be wetter if he\nhad more clothes on.&quot;\n",
+        "reference": "\"Hello, Dad!\" Bill called. \"I hope you\nweren't worried. We're going to\ndrag the boat ashore and turn\nher over. She has a foot of\nwater in her. I wouldn't be\nsurprised if we broke all\nspeed records on the way in.\nYes sir, I am slightly wet, and\nBuck would be wetter if he\nhad more clothes on.\"",
         "intermediate": [
             "\"Hlle, Dad: \" Fill called. \"I hope you",
             "weree't wouried. We're going to",
@@ -32,7 +32,7 @@
         "prediction": "\"Hello, Dad:\" Fill called. \"I hope you\nweren't worried. We're going to\ndrop the boat whose and two\nher over. The Lor a foot of\ntake in her. I wouldn't he\nSurprised if he broke all\nspeed recorder on the way in.\nYer sir, I am slightly wet, and\nSuch would. We better if he\nhad more clothes on. \""
     },
     "ex3": {
-        "reference": "'I will leave you the necessary pre-\nscription for the sedatives. You\nwill contact your new doctor\nwhen you reach your parents'\nhouse.' She watched him flick\nhis fountain-pen from his\nwaistcoat pocket, take out\nhis # prescription pad, and\n# scribble on it. Then,\nwith a gesture she knew so well,\nhe tore off the leaflet and\n",
+        "reference": "'I will leave you the necessary pre-\nscription for the sedatives. You\nwill contact your new doctor\nwhen you reach your parents'\nhouse.' She watched him flick\nhis fountain-pen from his\nwaistcoat pocket, take out\nhis # prescription pad, and\n# scribble on it. Then,\nwith a gesture she knew so well,\nhe tore off the leaflet and",
         "intermediate": [
             "I well leave you the ne cessary pre-",
             "scriptions for the sedatives. You",
@@ -49,7 +49,7 @@
         "prediction": "I well leave you the necessary pre-\nDescriptions for the sedatives. You\nwill contact your new doctor\nwhen you reach your parents'\nhome. ' She watched him flick\nhis fountain open from his\nwaistcoat pocket, take out\nhis prescription pad, and\n#scribble on it. Then,\nwith a gesture she knew so well,\nhe tore off the breather and"
     },
     "ex4": {
-        "reference": "With four doing the job and the waves\npushing at the stern, the yawl was soon\ndragged out but before it was turned\nover Bueno Buck reached into the foot\nof water, tossed out a string of silvery\nlake trout and said - 3&quot;Bill, he's better\nman at catch 'em than Injun, Judge.\nYou look. Little one more as fifteen\ninches. Maybe big one four feet,\nhuh?&quot;\n",
+        "reference": "With four doing the job and the waves\npushing at the stern, the yawl was soon\ndragged out but before it was turned\nover Bueno Buck reached into the foot\nof water, tossed out a string of silvery\nlake trout and said - 3\"Bill, he's better\nman at catch 'em than Injun, Judge.\nYou look. Little one more as fifteen\ninches. Maybe big one four feet,\nhuh?\"",
         "intermediate": [
             "With four doing the jos and the waves",
             "pusthing at the stern, the yaul was soon",
