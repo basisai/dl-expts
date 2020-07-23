@@ -108,9 +108,7 @@ venv.bak/
 .idea/
 
 # models
-bert/models/
-pneumonia/models/
-autoencoder/models/
+models/
+
+# data
 autoencoder/data/
-handwriting_ocr_chi/models/
-handwriting_ocr_eng/models/
