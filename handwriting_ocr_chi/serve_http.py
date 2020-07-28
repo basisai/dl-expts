@@ -5,8 +5,8 @@ import base64
 import codecs
 import copy
 
+import cv2
 import numpy as np
-import six
 from keras import backend as K
 from flask import Flask, request
 
@@ -25,20 +25,16 @@ model.summary()  # included to make it visible when model is reloaded
 session = K.get_session()
 
 
-def decode_image(field, dtype=np.uint8):
-    """Decode a base64 encoded numpy array to a list of floats.
+def decode_image(field):
+    """Decode a base64 encoded image to a list of floats.
     Args:
-        field: base64 encoded string or bytes
-        dtype
+        field: base64 encoded string
     Returns:
         numpy.array
     """
-    if field is None:
-        return None
-    if not isinstance(field, bytes):
-        field = six.b(field)
-    array = np.frombuffer(base64.b64decode(field), dtype=dtype)
-    return array
+    array = np.frombuffer(base64.b64decode(field), dtype=np.uint8)
+    image_array = cv2.imdecode(array, cv2.IMREAD_ANYCOLOR)
+    return image_array
 
 
 def preprocess(raw_img):

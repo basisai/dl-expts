@@ -77,6 +77,11 @@ def main():
     elif select_page == "Handwriting Recognition for English":
         eng_ocr()
 
+    st.sidebar.info(
+        "**Note**: When querying Bedrock endpoints, for\n"
+        "> `ConnectionError: ('Connection aborted.', BrokenPipeError(32, 'Broken pipe'))`\n\n"
+        "change **http** to **https** in the API URL.")
+
 
 if __name__ == "__main__":
     main()

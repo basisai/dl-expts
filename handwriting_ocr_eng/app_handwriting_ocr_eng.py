@@ -1,8 +1,8 @@
 import base64
 import json
 import requests
+from io import BytesIO
 
-import numpy as np
 import streamlit as st
 from PIL import Image
 
@@ -11,24 +11,23 @@ from .ocr.utils.cer_wer import cer_scores, wer_scores
 DATA_DIR = "handwriting_ocr_eng/"
 
 
-def encode_image(array, dtype=np.uint8):
-    """Encode an array to base64 encoded string or bytes.
+def encode_image(image):
+    """Encode an image to base64 encoded bytes.
     Args:
-        array: numpy.array
-        dtype
+        image: PIL.PngImagePlugin.PngImageFile
     Returns:
         base64 encoded string
     """
-    if array is None:
-        return None
-    return base64.b64encode(np.asarray(array, dtype=dtype)).decode("utf-8")
+    buffered = BytesIO()
+    image.save(buffered, format="png")
+    base64_bytes = base64.b64encode(buffered.getvalue())
+    return base64_bytes.decode("utf-8")
 
 
 @st.cache
 def recognize(image, url, token):
-    img = np.asarray(image.convert("RGB"))
-    encoded_img = encode_image(img.ravel())
-    data = json.dumps({"encoded_image": encoded_img, "image_shape": img.shape})
+    encoded_img = encode_image(image)
+    data = json.dumps({"encoded_image": encoded_img})
 
     headers = {"Content-Type": "application/json"}
     if token != "":
