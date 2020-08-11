@@ -6,10 +6,16 @@ from io import BytesIO
 import streamlit as st
 from PIL import Image
 
+DATA_DIR = "pneumonia/"
+SAMPLES = {
+    "ex1": "covid-19-pneumonia-67.jpeg",
+    "ex2": "pneumococcal-pneumonia-day0.jpg",
+}
+
 
 def encode_image(image):
     """Encode an image to base64 encoded bytes.
-    Args:
+    Args,
         image: PIL.PngImagePlugin.PngImageFile
     Returns:
         base64 encoded string
@@ -39,8 +45,15 @@ def image_recognize():
     url = st.text_input("Input API URL.")
     token = st.text_input("Input token.")
 
-    uploaded_file = st.file_uploader("Upload an image.")
-    if uploaded_file is not None:
+    select = st.selectbox("", ["Select a sample image", "Upload an image"])
+
+    if select == "Select a sample image":
+        select_eg = st.selectbox("Select a sample image.", list(SAMPLES.keys()))
+        uploaded_file = DATA_DIR + "samples/" + SAMPLES[select_eg]
+    else:
+        uploaded_file = st.file_uploader("Upload an image.")
+
+    if uploaded_file is not None and url != "":
         image = Image.open(uploaded_file)
 
         response_json = recognize(image, url, token)

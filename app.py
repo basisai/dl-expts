@@ -40,42 +40,27 @@ def main():
     #     unsafe_allow_html=True,
     # )
 
-    select_page = st.sidebar.selectbox("Select demo", [
-        "",
-        "Named Entity Recognition",
-        "Chest X-ray Image Classification",
-        "Pose Comparison",
-        "Sentiment Analysis",
-        "Handwriting Recognition for English",
-        "Handwriting Recognition for Chinese",
-        "Anomaly Detection",
-    ])
+    dict_pages = {
+        "Named Entity Recognition": ner,
+        "Chest X-ray Image Classification": image_recognize,
+        "Pose Comparison": pose_compare,
+        "Sentiment Analysis": demo_sentiment_analyzer,
+        "Handwriting Recognition for English": eng_ocr,
+        "Handwriting Recognition for Chinese": chi_char_ocr,
+        "Anomaly Detection": demo_anomaly_detection,
+        # "Table OCR": table_ocr,
+        # "Image OCR": image_ocr,
+    }
+
+    select_page = st.sidebar.selectbox("Select demo", [""] + list(dict_pages.keys()))
 
     if select_page == "":
         add_header("assets/logo.png")
         st.title("Demos")
         st.write("This app contains a series of demos. Select a demo in the left panel.")
         st.markdown("Source code: [dl-expts](https://github.com/basisai/dl-expts)")
-    elif select_page == "Named Entity Recognition":
-        ner()
-    elif select_page == "Chest X-ray Image Classification":
-        image_recognize()
-    elif select_page == "Pose Comparison":
-        pose_compare()
-    elif select_page == "Sentiment Analysis":
-        demo_sentiment_analyzer()
-    elif select_page == "Anomaly Detection":
-        demo_anomaly_detection()
-    elif select_page == "Table OCR":
-        pass
-        # table_ocr()
-    elif select_page == "Image OCR":
-        pass
-        # image_ocr()
-    elif select_page == "Handwriting Recognition for Chinese":
-        chi_char_ocr()
-    elif select_page == "Handwriting Recognition for English":
-        eng_ocr()
+    else:
+        dict_pages[select_page]()
 
     st.sidebar.info(
         "**Note**: When querying Bedrock endpoints, for\n"
