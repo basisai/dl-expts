@@ -52,20 +52,20 @@ def main():
         # "Image OCR": image_ocr,
     }
 
-    select_page = st.sidebar.selectbox("Select demo", [""] + list(dict_pages.keys()))
+    select_page = st.sidebar.selectbox("Select a demo", [""] + list(dict_pages.keys()))
 
     if select_page == "":
         add_header("assets/logo.png")
         st.title("Demos")
         st.write("This app contains a series of demos. Select a demo in the left panel.")
-        st.markdown("Source code: [dl-expts](https://github.com/basisai/dl-expts)")
+        st.markdown("[Source code](https://github.com/basisai/dl-expts)")
     else:
         dict_pages[select_page]()
 
     st.sidebar.info(
         "**Note**: When querying Bedrock endpoints, for\n"
         "> `ConnectionError: ('Connection aborted.', BrokenPipeError(32, 'Broken pipe'))`\n\n"
-        "change **http** to **https** in the API URL.")
+        "replace **http** with **https** in the API URL.")
 
 
 if __name__ == "__main__":
