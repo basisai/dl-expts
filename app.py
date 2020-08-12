@@ -28,12 +28,11 @@ def add_header(path):
 
 
 def main():
-    # max_width = 900
     # st.markdown(
     #     f"""
     #     <style>
     #     .reportview-container .main .block-container{{
-    #         max-width: {max_width}px;
+    #         max-width: 900px;
     #     }}
     #     </style>
     #     """,
