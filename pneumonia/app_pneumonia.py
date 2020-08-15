@@ -9,7 +9,9 @@ from .utils_image import encode_image, decode_image
 DATA_DIR = "pneumonia/"
 SAMPLES = {
     "ex1": "covid-19-pneumonia-67.jpeg",
-    "ex2": "pneumococcal-pneumonia-day0.jpg",
+    "ex2": "covid-19-caso-82-1-8.png",
+    "ex3": "41182_2020_203_Fig4_HTML.jpg",
+    "ex4": "pneumococcal-pneumonia-day0.jpg",
 }
 
 
@@ -32,12 +34,13 @@ def image_recognize():
     url = st.text_input("Input API URL.", "https://shiny-mouse-9036.pub.playground.bdrk.ai")
     token = st.text_input("Input token.")
 
-    select = st.selectbox("Choose a mode.", ["", "Select a sample image", "Upload an image"])
+    select_mode = st.selectbox("Choose a mode.", ["", "Select a sample image", "Upload an image"])
 
-    if select == "Select a sample image":
+    uploaded_file = None
+    if select_mode == "Select a sample image":
         select_eg = st.selectbox("Select a sample image.", list(SAMPLES.keys()))
         uploaded_file = DATA_DIR + "samples/" + SAMPLES[select_eg]
-    else:
+    elif select_mode == "Upload an image":
         uploaded_file = st.file_uploader("Upload an image.")
 
     if uploaded_file is not None and url != "":
