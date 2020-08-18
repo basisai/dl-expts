@@ -2,6 +2,7 @@
 Script for serving.
 """
 import base64
+import os
 
 import cv2
 import numpy as np
@@ -19,9 +20,13 @@ from ocr.handwriting_line_recognition import (
     decode as decoder_handwriting,
 )
 
-WORD_SEGMENTATION_MODEL = "/artefact/models/word_segmentation2.params"
-HANDWRITING_RECOGNITION_MODEL = "/artefact/models/handwriting_line8.params"
-DENOISER_MODEL = "/artefact/models/denoiser2.params"
+MODEL_DIR = "/artefact/"
+if os.path.exists("models/"):
+    MODEL_DIR = "models/"
+
+WORD_SEGMENTATION_MODEL = MODEL_DIR + "word_segmentation2.params"
+HANDWRITING_RECOGNITION_MODEL = MODEL_DIR + "handwriting_line8.params"
+DENOISER_MODEL = MODEL_DIR + "denoiser2.params"
 
 FEATURE_LEN = 150
 ctx = mx.gpu(0) if mx.context.num_gpus() > 0 else mx.cpu()

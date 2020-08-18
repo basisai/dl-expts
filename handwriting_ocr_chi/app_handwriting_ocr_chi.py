@@ -7,9 +7,8 @@ import pandas as pd
 import streamlit as st
 from PIL import Image
 
-DATA_DIR = "handwriting_ocr_chi/"
+DATA_DIR = "handwriting_ocr_chi/samples/"
 IMG_SIZE = 96
-SAMPLES = [f"img{i}.png" for i in range(19)]
 
 
 def encode_image(image):
@@ -48,16 +47,18 @@ def load_results():
 def chi_char_ocr():
     st.title("Handwriting Recognition Demo for Simplified Chinese Character")
 
-    results = load_results()
+    select_mode = st.selectbox("Choose a mode.", ["Select a sample image", "Upload an image"])
 
-    select = st.selectbox("", ["Select a sample image", "Upload an image"])
+    if select_mode == "Select a sample image":
+        samples = [f"img{i}.png" for i in range(19)]
+        results = load_results()
 
-    if select == "Select a sample image":
-        select_idx = st.slider("Select a sample image.", 0, len(SAMPLES))
-        st.image(DATA_DIR + "samples/img_phrase.png", use_column_width=True)
+        select_idx = st.slider("Select a sample image.", 0, len(samples))
+        st.image(DATA_DIR + "img_phrase.png", use_column_width=True)
+
         uploaded_file = None
         if select_idx > 0:
-            uploaded_file = DATA_DIR + "samples/" + SAMPLES[int(select_idx) - 1]
+            uploaded_file = DATA_DIR + samples[int(select_idx) - 1]
 
         if uploaded_file is not None:
             st.subheader("Image")
@@ -70,7 +71,7 @@ def chi_char_ocr():
             st.write("Top 10")
             st.write(top_preds.iloc[:10])
 
-    else:
+    elif select_mode == "Upload an image":
         url = st.text_input("Input API URL.")
         token = st.text_input("Input token.")
         uploaded_file = st.file_uploader("Upload an image.")

@@ -4,6 +4,7 @@ Script for serving.
 import base64
 import codecs
 import copy
+import os
 
 import cv2
 import numpy as np
@@ -13,13 +14,16 @@ from flask import Flask, request
 from .utils import model08
 
 
-IMG_SIZE = 96
+MODEL_DIR = "/artefact/"
+if os.path.exists("models/"):
+    MODEL_DIR = "models/"
 
-with codecs.open("/artefact/labels.txt", "r", "UTF-8") as label_file:
+with codecs.open(MODEL_DIR + "labels.txt", "r", "UTF-8") as label_file:
     klasses = [a.strip() for a in label_file.readlines()]
 
+IMG_SIZE = 96
 model = model08(IMG_SIZE, len(klasses))
-model.load_weights("/artefact/weights08.h5")
+model.load_weights(MODEL_DIR + "weights08.h5")
 model._make_predict_function()
 model.summary()  # included to make it visible when model is reloaded
 session = K.get_session()

@@ -61,10 +61,10 @@ def main():
     else:
         dict_pages[select_page]()
 
-    st.sidebar.info(
-        "**Note**: When querying Bedrock endpoints, for\n"
-        "> `ConnectionError: ('Connection aborted.', BrokenPipeError(32, 'Broken pipe'))`\n\n"
-        "replace **http** with **https** in the API URL.")
+    # st.sidebar.info(
+    #     "**Note**: When querying Bedrock endpoints, for\n"
+    #     "> `ConnectionError: ('Connection aborted.', BrokenPipeError(32, 'Broken pipe'))`\n\n"
+    #     "replace **http** with **https** in the API URL.")
 
 
 if __name__ == "__main__":

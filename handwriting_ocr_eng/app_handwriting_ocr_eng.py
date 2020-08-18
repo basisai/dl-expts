@@ -8,7 +8,7 @@ from PIL import Image
 
 from .ocr.utils.cer_wer import cer_scores, wer_scores
 
-DATA_DIR = "handwriting_ocr_eng/"
+DATA_DIR = "handwriting_ocr_eng/samples/"
 
 
 def encode_image(image):
@@ -54,7 +54,7 @@ def compare(reference, decoded_text):
 
 @st.cache
 def load_results():
-    with open(DATA_DIR + "samples/results.json", "r") as f:
+    with open(DATA_DIR + "results.json", "r") as f:
         results = json.load(f)
     return results
 
@@ -62,33 +62,55 @@ def load_results():
 def eng_ocr():
     st.title("Handwriting Recognition for English")
 
-    results = load_results()
-    select = st.selectbox("", ["Select a sample image", "Upload an image"])
+    select_mode = st.selectbox("Choose a mode.", ["Select a sample image", "Upload an image"])
 
-    if select == "Select a sample image":
-        select_ex = st.selectbox("Select a sample image.", [""] + [f"ex{i}" for i in range(1, 5)])
+    if select_mode == "Select a sample image":
+        samples = {
+            "ex1": {
+                "raw_img": "ex1.png",
+                "segmented_img": "segmented1.png",
+            },
+            "ex2": {
+                "raw_img": "ex2.png",
+                "segmented_img": "segmented2.png",
+            },
+            "ex3": {
+                "raw_img": "ex3.png",
+                "segmented_img": "segmented3.png",
+            },
+            "ex4": {
+                "raw_img": "ex4.png",
+                "segmented_img": "segmented4.png",
+            },
+        }
+        results = load_results()
+
+        select_ex = st.selectbox("Select a sample image.", [""] + list(samples.keys()))
         if select_ex != "":
-            raw_img = Image.open(DATA_DIR + f"samples/{select_ex}.png")
+            sample = samples[select_ex]
+            sample.update(results[select_ex])
+
+            raw_img = Image.open(DATA_DIR + sample["raw_img"])
             st.image(raw_img, caption="Sample Image", use_column_width=True)
 
             st.write("**Segmentation**")
-            segmented_img = Image.open(DATA_DIR + f"samples/segmented{int(select_ex[2:])}.png")
+            segmented_img = Image.open(DATA_DIR + sample["segmented_img"])
             st.image(segmented_img, use_column_width=True)
 
             st.write("**Handwriting recognition**")
-            decoded_text_am = "\n".join(results[select_ex]["intermediate"])
+            decoded_text_am = "\n".join(sample["intermediate"])
             st.text(decoded_text_am)
 
             st.subheader("Denoised Output")
-            decoded_text = results[select_ex]["prediction"]
+            decoded_text = sample["prediction"]
             st.text(decoded_text)
 
             st.subheader("Reference")
-            reference = results[select_ex]["reference"]
+            reference = sample["reference"]
             st.text(reference)
             compare(reference, decoded_text)
 
-    else:
+    elif select_mode == "Upload an image":
         url = st.text_input("Input API URL.")
         token = st.text_input("Input token.")
         uploaded_file = st.file_uploader("Upload an image.")
