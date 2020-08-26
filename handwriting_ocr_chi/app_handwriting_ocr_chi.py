@@ -65,7 +65,8 @@ def chi_char_ocr():
             raw_img = Image.open(uploaded_file)
             st.image(raw_img, use_column_width=False)
 
-            top_preds = results.query(f"ex == 'ex{int(select_idx) - 1}'")[["Character", "Probability"]]
+            top_preds = results.query(f"ex == 'ex{int(select_idx) - 1}'")[["Character", "Probability"]].copy()
+            top_preds = top_preds.reset_index(drop=True)
             character = top_preds["Character"].iloc[0]
             st.subheader(f"Output: **`{character}`**")
             st.write("Top 10")

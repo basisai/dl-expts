@@ -22,14 +22,15 @@ def recognize(image, url, token):
     return response.json()
 
 
-def show_results(prob, cam_image, gc_image):
+def show_results(prob, cam_image, gc_image, ig_image):
     st.subheader(f"Probability of having COVID-19 = `{prob:.2f}%`")
     st.header("Explainability")
-    st.subheader("[Grad-CAM and Guided Grad-CAM](http://gradcam.cloudcv.org/)")
+    st.write("Methods: Grad-CAM, Guided Grad-CAM and Integrated Gradients")
     st.write("To visualise the regions of input that are 'important' for predictions from "
-             "Convolutional Neural Network (CNN)-based models.")
+             "Convolutional Neural Network-based models.")
     st.image(cam_image, caption="Grad-CAM Image", width=300)
     st.image(gc_image, caption="Guided Grad-CAM Image", width=300)
+    st.image(ig_image, caption="Integrated Gradients Image", width=300)
 
 
 def image_recognize():
@@ -44,24 +45,28 @@ def image_recognize():
                 "prob": 0.8808,
                 "can_img": "ex1_cam_img.jpeg",
                 "gc_image": "ex1_gc_img.jpeg",
+                "ig_image": "ex1_ig_img.jpeg",
             },
             "ex2": {
                 "raw_img": "covid-19-caso-82-1-8.png",
                 "prob": 0.7102,
                 "can_img": "ex2_cam_img.jpeg",
                 "gc_image": "ex2_gc_img.jpeg",
+                "ig_image": "ex2_ig_img.jpeg",
             },
             "ex3": {
                 "raw_img": "41182_2020_203_Fig4_HTML.jpg",
                 "prob": 0.9706,
                 "can_img": "ex3_cam_img.jpeg",
                 "gc_image": "ex3_gc_img.jpeg",
+                "ig_image": "ex3_ig_img.jpeg",
             },
             "ex4": {
                 "raw_img": "pneumococcal-pneumonia-day0.jpg",
                 "prob": 0.2417,
                 "can_img": "ex4_cam_img.jpeg",
                 "gc_image": "ex4_gc_img.jpeg",
+                "ig_image": "ex4_ig_img.jpeg",
             },
         }
 
@@ -74,7 +79,8 @@ def image_recognize():
             prob = sample["prob"] * 100
             cam_image = Image.open(DATA_DIR + sample["can_img"])
             gc_image = Image.open(DATA_DIR + sample["gc_image"])
-            show_results(prob, cam_image, gc_image)
+            ig_image = Image.open(DATA_DIR + sample["ig_image"])
+            show_results(prob, cam_image, gc_image, ig_image)
 
     elif select_mode == "Upload an image":
         url = st.text_input("Input API URL.")
@@ -89,7 +95,8 @@ def image_recognize():
             prob = response_json["prob"] * 100
             cam_image = decode_image(response_json["cam_image"])
             gc_image = decode_image(response_json["gc_image"])
-            show_results(prob, cam_image, gc_image)
+            ig_image = decode_image(response_json["ig_image"])
+            show_results(prob, cam_image, gc_image, ig_image)
 
 
 if __name__ == "__main__":
