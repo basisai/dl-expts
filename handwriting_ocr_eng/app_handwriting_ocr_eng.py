@@ -54,9 +54,7 @@ def compare(reference, decoded_text):
 
 @st.cache
 def load_results():
-    with open(DATA_DIR + "results.json", "r") as f:
-        results = json.load(f)
-    return results
+    return json.load(open(DATA_DIR + "results.json", "r"))
 
 
 def eng_ocr():

@@ -112,3 +112,5 @@ models/
 
 # data
 autoencoder/data/
+ner/data/
+

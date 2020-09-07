@@ -10,4 +10,3 @@ To add a demo to the app,
 
 ## Notes
 - There is no official PyTorch base image, so use TensorFlow-GPU base image and install PyTorch.
-

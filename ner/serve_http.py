@@ -1,6 +1,8 @@
 """
 Script for serving.
 """
+import os
+
 import torch
 from flask import Flask, request
 from transformers import BertTokenizer, BertForTokenClassification
@@ -8,12 +10,16 @@ from jieba import cut
 
 from utils import convert_examples_to_features, whitespace_punctuation, InputExample
 
+MODEL_DIR = "/artefact/"
+if os.path.exists("models/"):
+    MODEL_DIR = "models/"
+FINETUNED_MODEL_PATH = MODEL_DIR + "finetuned_bert.bin"
+
 PRETRAINED_MODEL_NAME = "bert-base-multilingual-cased"
 MAX_SEQUENCE_LENGTH = 200
 LABEL_LIST = ["O", "PERSON", "ORGANIZATION", "LOCATION", "[CLS]", "[SEP]", "X"]
 REV_LABEL_MAP = {i: label for i, label in enumerate(LABEL_LIST, 1)}
 NUM_LABELS = len(LABEL_LIST) + 1
-FINETUNED_MODEL_PATH = "/artefact/finetuned_bert.bin"
 
 BERT_TOKENIZER = BertTokenizer.from_pretrained(PRETRAINED_MODEL_NAME, do_lower_case=False)
 
