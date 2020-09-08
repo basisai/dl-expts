@@ -5,7 +5,7 @@ import streamlit as st
 
 from ner.app_ner import ner
 from pneumonia.app_pneumonia import image_recognize
-# from elephant.app_elephant import detect
+from detection.app_detection import detect
 from pose_estimation.app_pose import pose_compare
 from sentiment.app_sentiment_demo import demo_sentiment_analyzer
 from autoencoder.app_autoencoder import demo_anomaly_detection
@@ -43,7 +43,7 @@ def main():
     dict_pages = {
         "Named Entity Recognition": ner,
         "Chest X-ray Image Classification": image_recognize,
-        # "Elephant Detection": detect,
+        "Object Detection": detect,
         "Pose Comparison": pose_compare,
         "Sentiment Analysis": demo_sentiment_analyzer,
         "Handwriting Recognition for English": eng_ocr,
