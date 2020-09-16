@@ -1,5 +1,4 @@
 import streamlit as st
-from PIL import Image
 
 DATA_DIR = "detection/samples/"
 
@@ -14,37 +13,32 @@ def detect():
     st.write("Animal pose estimation:\n"
              "- [DeepLabCut](https://github.com/DeepLabCut/DeepLabCut)\n"
              "- [DeepPoseKit](https://github.com/jgraving/DeepPoseKit)")
-    st.write("Image annotation tools:\n"
+
+    st.subheader("Data")
+    st.write("To train the models, we will need labelled data. "
+             "We will collect video data, extract the frames and hand-label them:\n"
+             "- Bounding boxes (for detecting elephants)\n"
+             "- Keypoints (for detecting elephant body parts)")
+    st.write("To help in labelling, we will use image annotation tools such as\n"
              "- [CVAT](https://github.com/opencv/cvat)\n"
              "- [LabelImg](https://github.com/tzutalin/labelImg)")
 
+    st.header("Elephant detection")
     st.subheader("Example: after applying detection algorithm (YOLO)")
     st.video(DATA_DIR + "out2.mp4")
 
     st.header("Pose estimation: prelims")
-    st.write("We will first need to label the different parts of the elephant. Preliminary list of body parts are ")
+    st.write("We will first need to label the keypoints of the elephant. Preliminary list of keypoints:")
     st.write("""
-        - L_eye
-        - R_eye
-        - L_ear
-        - R_ear
+        - L_eye, R_eye
+        - L_ear, R_ear
+        - Nose, Mid_trunk, End_trunk
         - Throat
         - Tail
         - Withers
-        - L_F_elbow
-        - R_F_elbow
-        - L_B_elbow
-        - R_B_elbow
-        - L_F_knee
-        - R_F_knee
-        - L_B_knee
-        - R_B_knee
-        - L_F_paw
-        - R_F_paw
-        - L_B_paw
-        - R_B_paw
-        - Mid_trunk
-        - End_trunk
+        - L_F_elbow, R_F_elbow, L_B_elbow, R_B_elbow
+        - L_F_knee, R_F_knee, L_B_knee, R_B_knee
+        - L_F_paw, R_F_paw, L_B_paw, R_B_paw
     """)
     st.write("`Do they look ok?`")
 
