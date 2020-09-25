@@ -24,8 +24,12 @@ def detect():
              "- [LabelImg](https://github.com/tzutalin/labelImg)")
 
     st.header("Elephant detection")
-    st.subheader("Example: after applying detection algorithm (YOLO)")
-    st.video(DATA_DIR + "out2.mp4")
+    st.write("From `C1`, we extract some images, label the elephants in them, and train a YOLO model.")
+    st.subheader("After applying YOLO detection algorithm")
+    st.write("**Example 1**")
+    st.video(DATA_DIR + "sample1_infer.mp4")
+    st.write("**Example 2**")
+    st.video(DATA_DIR + "sample2_infer.mp4")
 
     st.header("Pose estimation: prelims")
     st.write("We will first need to label the keypoints of the elephant. Preliminary list of keypoints:")
@@ -40,13 +44,9 @@ def detect():
         - L_F_knee, R_F_knee, L_B_knee, R_B_knee
         - L_F_paw, R_F_paw, L_B_paw, R_B_paw
     """)
-    st.write("`Do they look ok?`")
 
     st.subheader("Example of labelling an image frame")
     st.image(DATA_DIR + "frame146_anno.jpeg")
-
-    st.subheader("Another example: horse")
-    st.image(DATA_DIR + "ho1_anno.jpeg")
 
 
 if __name__ == "__main__":
