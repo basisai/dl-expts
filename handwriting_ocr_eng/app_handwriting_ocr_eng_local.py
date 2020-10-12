@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import numpy as np
 import gluonnlp as nlp
 import mxnet as mx

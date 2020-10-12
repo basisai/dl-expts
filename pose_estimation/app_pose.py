@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import pickle
 
 import numpy as np

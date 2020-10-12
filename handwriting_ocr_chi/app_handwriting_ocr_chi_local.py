@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import codecs
 
 import numpy as np

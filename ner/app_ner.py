@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import json
 import requests
 

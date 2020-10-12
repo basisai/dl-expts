@@ -1,5 +1,5 @@
 """
-Script for the app.
+Streamlit app
 """
 import json
 

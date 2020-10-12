@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import streamlit as st
 
 DATA_DIR = "detection/samples/"

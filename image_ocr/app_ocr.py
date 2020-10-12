@@ -1,3 +1,6 @@
+"""
+Streamlit app
+"""
 import pytesseract
 import streamlit as st
 from PIL import Image
