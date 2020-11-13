@@ -56,9 +56,10 @@ def main():
         # "Image OCR": image_ocr,
     }
 
-    select_page = st.sidebar.selectbox("Select a demo", [""] + list(dict_pages.keys()))
+    st.sidebar.title("Demos")
+    select_page = st.sidebar.radio("Go to", ["Home"] + list(dict_pages.keys()))
 
-    if select_page == "":
+    if select_page == "Home":
         add_header("assets/logo.png")
         st.title("Demos")
         st.write("This app contains a series of demos. Select a demo in the left panel.")

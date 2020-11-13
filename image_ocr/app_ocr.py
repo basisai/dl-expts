@@ -26,7 +26,7 @@ def image_ocr():
         st.subheader("Output")
         output_text = recognize(img)
         st.text(output_text)
-        
+
 
 if __name__ == "__main__":
     image_ocr()
