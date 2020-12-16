@@ -7,7 +7,7 @@ train {
             "pip3 install --upgrade pip",
             "pip3 install -r requirements.txt",
         ]
-        script = [{sh = ["python3 train_autoencoder.py"]}]
+        script = [{sh = ["python3 train.py"]}]
         resources {
             cpu = "2"
             memory = "4G"
