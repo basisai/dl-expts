@@ -3,8 +3,8 @@ Streamlit app
 """
 import base64
 import json
-import requests
 from io import BytesIO
+import requests
 
 import streamlit as st
 from PIL import Image
@@ -29,6 +29,7 @@ def encode_image(image):
 
 @st.cache
 def recognize(image, url, token):
+    """OCR."""
     encoded_img = encode_image(image)
     data = json.dumps({"encoded_image": encoded_img})
 
@@ -42,6 +43,7 @@ def recognize(image, url, token):
 
 
 def compare(reference, decoded_text):
+    """Compare reference text with decoded text."""
     cer_s, cer_d, cer_i = cer_scores(reference, decoded_text)
     st.write(f"**Overall CER: `{100 * (cer_s + cer_d + cer_i):.2f}%`**")
     st.write(f"- Substitution error = `{100 * cer_s:.2f}%`\n"
@@ -57,10 +59,12 @@ def compare(reference, decoded_text):
 
 @st.cache
 def load_results():
+    """Load data."""
     return json.load(open(DATA_DIR + "results.json", "r"))
 
 
 def eng_ocr():
+    """App."""
     st.title("Handwriting Recognition for English")
 
     select_mode = st.selectbox("Choose a mode.", ["Select a sample image", "Upload an image"])

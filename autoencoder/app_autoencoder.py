@@ -10,20 +10,26 @@ DATA_DIR = "autoencoder/results/"
 
 @st.cache
 def read_data():
+    """Load data."""
     test = pd.read_csv(DATA_DIR + "test.csv")
     preds = pd.read_csv(DATA_DIR + "preds.csv")
     return test.values, preds.values
 
-    
+
 def demo_anomaly_detection():
+    """App."""
     st.title("Anomaly Detection Using Autoencoder Demo")
     st.subheader("Analysis Method")
-    st.write("- Using historical time series data, we train an autoencoder model to learn a "
-             "representation of the data in an unsupervised manner.\n"
-             "- At serving time, a time series is then fed into the model to predict the expected shape.\n"
-             "- We then compute the MSE between the actual time series and its prediction.\n"
-             "- If the MSE exceeds a threshold, we conclude that the time series is an anomaly.\n")
-    
+    st.write(
+        """
+        - Using historical time series data, we train an autoencoder model to learn a
+        representation of the data in an unsupervised manner.
+        - At serving time, a time series is then fed into the model to predict the expected shape.
+        - We then compute the MSE between the actual time series and its prediction.
+        - If the MSE exceeds a threshold, we conclude that the time series is an anomaly.
+        """
+    )
+
     st.subheader("Examples")
     test, preds = read_data()
     select_ex = st.selectbox("Select examples.", [f"ex{i}" for i in range(1, test.shape[0] + 1)])

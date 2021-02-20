@@ -44,10 +44,12 @@ def recognize(image, url, token):
 
 @st.cache
 def load_results():
+    """Load data."""
     return pd.read_csv(DATA_DIR + "results.csv")
 
 
 def chi_char_ocr():
+    """App."""
     st.title("Handwriting Recognition Demo for Simplified Chinese Character")
 
     select_mode = st.selectbox("Choose a mode.", ["Select a sample image", "Upload an image"])
@@ -68,7 +70,10 @@ def chi_char_ocr():
             raw_img = Image.open(uploaded_file)
             st.image(raw_img, use_column_width=False)
 
-            top_preds = results.query(f"ex == 'ex{int(select_idx) - 1}'")[["Character", "Probability"]].copy()
+            top_preds = (
+                results
+                .query(f"ex == 'ex{int(select_idx) - 1}'")
+            )[["Character", "Probability"]].copy()
             top_preds = top_preds.reset_index(drop=True)
             character = top_preds["Character"].iloc[0]
             st.subheader(f"Output: **`{character}`**")

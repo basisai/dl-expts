@@ -2,14 +2,14 @@
 Script for performing batch scoring.
 """
 import os
-
-import neptune
-import numpy as np
 import pickle
+
+import numpy as np
+import neptune
 from keras.models import load_model
 from PIL import Image
 
-from utils_autoencoder import compute_mse, load_data, ts_plots
+from utils import compute_mse, load_data, ts_plots
 
 NEPTUNE_API_TOKEN = os.getenv("NEPTUNE_API_TOKEN")
 NEPTUNE_PROJECT = os.getenv("NEPTUNE_PROJECT")
@@ -22,6 +22,7 @@ OUTPUT_MODEL_PATH = f"/artefact/{MODEL_TYPE}_model.h5"
 
 
 def fig2pil(fig):
+    """Convert figure to PIL image."""
     fig.canvas.draw()
 
     w, h = fig.canvas.get_width_height()
@@ -50,9 +51,9 @@ def main():
     )
 
     with neptune.create_experiment(
-        name="autoencoders",
-        params={"model_type": MODEL_TYPE, "test_data": INPUT_TEST_FILE_PATH}
-    ) as expt:
+            name="autoencoders",
+            params={"model_type": MODEL_TYPE, "test_data": INPUT_TEST_FILE_PATH}
+        ):
         neptune.send_image("test_plots", fig2pil(ts_plots(x_test, preds, scores)))
 
 

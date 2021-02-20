@@ -18,6 +18,7 @@ SAMPLES = [f"img{i}.png" for i in range(19)]
 
 @st.cache
 def preprocess(raw_img):
+    """Preprocess image."""
     img = np.asarray(raw_img.convert('L'))
     img = np.expand_dims(img, 0)
     img = np.expand_dims(img, 3)
@@ -27,7 +28,8 @@ def preprocess(raw_img):
 
 
 @st.cache
-def load_klasses():
+def load_classes():
+    """Load classes."""
     with codecs.open(DATA_DIR + "models/labels.txt", "r", "UTF-8") as label_file:
         klasses = [a.strip() for a in label_file.readlines()]
     return klasses
@@ -35,6 +37,7 @@ def load_klasses():
 
 @st.cache(allow_output_mutation=True)
 def load_model(n_classes):
+    """Load model."""
     model = model08(IMG_SIZE, n_classes)
     model.load_weights(DATA_DIR + "models/weights08.h5")
     model._make_predict_function()
@@ -50,9 +53,10 @@ def rank_predictions(pred, klasses):
 
 
 def chi_char_ocr():
+    """App."""
     st.title("Handwriting Recognition Demo for Simplified Chinese Character")
 
-    klasses = load_klasses()
+    klasses = load_classes()
     model, session = load_model(len(klasses))
 
     select = st.selectbox("", ["Select a sample image", "Upload an image"])

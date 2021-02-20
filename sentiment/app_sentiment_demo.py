@@ -14,6 +14,7 @@ DATA_DIR = "sentiment/results/"
 
 @st.cache
 def read_data(file_path):
+    """Load data."""
     return json.load(open(file_path, "r"))
 
 
@@ -33,7 +34,7 @@ def plot_kde(scores):
     median_val = np.median(scores)
     c = "r" if median_val < 0 else "b"
 
-    x, y = sns.kdeplot(scores, bw=0.05).get_lines()[0].get_data()
+    x, y = sns.kdeplot(scores, bw_method=0.05).get_lines()[0].get_data()
     source = pd.DataFrame({"x": x, "y": y})
     base = alt.Chart(source).mark_area(
         color=colours[c]["area_color"], fillOpacity=0.5
@@ -52,8 +53,8 @@ def plot_ts(scores):
         y=alt.Y("score:Q", title="Sentiment score", scale=alt.Scale(domain=[-1, 1])),
         color=alt.condition(
             alt.datum.score > 0,
-            alt.value("#2874A6"),  # The positive color
-            alt.value("#B03A2E"),  # The negative color
+            alt.value("#2874A6"),  # positive color
+            alt.value("#B03A2E"),  # negative color
         ),
         tooltip=["sentence_num", "score"],
     )
@@ -76,8 +77,12 @@ def _present_results(sentences, y_prob):
     scores = y_prob * 2 - 1
 
     st.write(f"**Median Sentiment Score = `{np.median(scores):.4f}`**")
-    st.write("The KDE plot shows the distribution of the sentiment scores of all the sentences. "
-             "A left-skewed plot indicates generally positive sentiment for the entire article.")
+    st.write(
+        """
+        The KDE plot shows the distribution of the sentiment scores of all the sentences.
+        A left-skewed plot indicates generally positive sentiment for the entire article.
+        """
+    )
     st.altair_chart(plot_kde(scores), use_container_width=True)
     st.write("The plot below shows the sequence of sentiment scores in successive order.")
     st.altair_chart(plot_ts(scores), use_container_width=True)
@@ -93,11 +98,16 @@ def _present_results(sentences, y_prob):
 
 
 def demo_sentiment_analyzer():
+    """App."""
     st.title("Article Sentiment Analysis Demo")
     st.subheader("Analysis Method")
-    st.write("- Given an article in PDF or text, we clean and split the text into sentences.\n"
-             "- Each sentence is then fed into a ML model to generate a sentiment score.\n"
-             "- Sentiment score ranges between `-1.0` (most negative) and `1.0` (most positive).\n")
+    st.write(
+        """
+        - Given an article in PDF or text, we clean and split the text into sentences.
+        - Each sentence is then fed into a ML model to generate a sentiment score.
+        - Sentiment score ranges between `-1.0` (most negative) and `1.0` (most positive).
+        """
+    )
 
     st.subheader("Examples")
     st.write("(In descending order of median sentiment score)")

@@ -1,9 +1,6 @@
 """
 Streamlit app entry page
 """
-import base64
-from pathlib import Path
-
 import streamlit as st
 
 from ner.app_ner import ner
@@ -18,31 +15,8 @@ from handwriting_ocr_eng.app_handwriting_ocr_eng import eng_ocr
 # from table_ocr.app_ocr import table_ocr
 
 
-def uri_encode_path(path, mime="image/png"):
-    raw = Path(path).read_bytes()
-    b64 = base64.b64encode(raw).decode()
-    return f"data:{mime};base64,{b64}"
-
-
-def add_header(path):
-    st.markdown(
-        "<img src='{}' class='img-fluid'>".format(uri_encode_path(path)),
-        unsafe_allow_html=True,
-    )
-
-
 def main():
-    # st.markdown(
-    #     f"""
-    #     <style>
-    #     .reportview-container .main .block-container{{
-    #         max-width: 900px;
-    #     }}
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
-
+    """App."""
     dict_pages = {
         "Named Entity Recognition": ner,
         "Chest X-ray Image Classification": image_recognize,
@@ -60,9 +34,9 @@ def main():
     select_page = st.sidebar.radio("Go to", ["Home"] + list(dict_pages.keys()))
 
     if select_page == "Home":
-        add_header("assets/logo.png")
+        st.image("./assets/logo.png")
         st.title("Demos")
-        st.write("This app contains a series of demos. Select a demo in the left panel.")
+        st.write("This app contains a series of demos. Select a demo on the left panel.")
         st.markdown("[Source code](https://github.com/basisai/dl-expts)")
     else:
         dict_pages[select_page]()
