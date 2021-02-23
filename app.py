@@ -19,12 +19,12 @@ def main():
     """App."""
     dict_pages = {
         "Named Entity Recognition": ner,
-        "Chest X-ray Image Classification": image_recognize,
-        "Object Detection": detect,
+        "X-ray Image Classification": image_recognize,
+        "Object Detection and Tracking": detect,
         "Pose Comparison": pose_compare,
         "Sentiment Analysis": demo_sentiment_analyzer,
-        "Handwriting Recognition for English": eng_ocr,
-        "Handwriting Recognition for Chinese": chi_char_ocr,
+        "Handwriting Recognition (English)": eng_ocr,
+        "Handwriting Recognition (Chinese)": chi_char_ocr,
         "Anomaly Detection": demo_anomaly_detection,
         # "Table OCR": table_ocr,
         # "Image OCR": image_ocr,

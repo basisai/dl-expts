@@ -8,61 +8,37 @@ DATA_DIR = "detection/samples/"
 
 def detect():
     """App."""
-    st.title("Object Detection Demo")
-
-    st.subheader("Methodologies")
-    st.write(
-        """
-        Objection detection algorithms:
-        - YOLOv4, [YOLOv5](https://github.com/ultralytics/yolov5)
-        - [EfficientDet](https://github.com/rwightman/efficientdet-pytorch)
-        """
-    )
-    st.write(
-        """
-        Animal pose estimation:
-        - [DeepLabCut](https://github.com/DeepLabCut/DeepLabCut)
-        - [DeepPoseKit](https://github.com/jgraving/DeepPoseKit)
-        """
-    )
-
-    st.subheader("Data")
-    st.write(
-        """
-        To train the models, we will need labelled data. "
-        We will collect video data, extract the frames and hand-label them:
-        - Bounding boxes (for detecting elephants)
-        - Keypoints (for detecting elephant body parts)
-        """
-    )
-    st.write(
-        """
-        To help in labelling, we will use image annotation tools such as
-        - [CVAT](https://github.com/opencv/cvat)
-        - [LabelImg](https://github.com/tzutalin/labelImg)
-        """
-    )
+    st.title("Object Detection and Tracking Demo")
 
     st.header("Elephant detection")
     st.write(
         """
-        From `C1`, we extract some images, label the elephants in them, and train a YOLO model.
+        From the video data, we extract some images, label the bounding boxes of the elephants,
+        and train a detection model.
         """
     )
-    st.subheader("After applying YOLO detection algorithm")
     st.write("**Example 1**")
     st.video(DATA_DIR + "sample1_infer.mp4")
     st.write("**Example 2**")
     st.video(DATA_DIR + "sample2_infer.mp4")
 
+    st.header("Elephant Tracking")
+    st.write(
+        """
+        The detections from the multi-camera setup are fused together before applying a tracking
+        algorithm to track the elephants.
+        """
+    )
+    st.video(DATA_DIR + "overlay.mp4")
+
     st.header("Pose estimation: prelims")
     st.write(
         """
+        Animal pose estimation:
+        - [DeepLabCut](https://github.com/DeepLabCut/DeepLabCut)
+        - [DeepPoseKit](https://github.com/jgraving/DeepPoseKit)
+
         We will first need to label the keypoints of the elephant. Preliminary list of keypoints:
-        """
-    )
-    st.write(
-        """
         - L_eye, R_eye
         - L_ear, R_ear
         - Nose, Mid_trunk, End_trunk
@@ -77,6 +53,20 @@ def detect():
 
     st.subheader("Example of labelling an image frame")
     st.image(DATA_DIR + "frame146_anno.jpeg")
+    
+    st.header("Annex")
+    st.subheader("Data")
+    st.write(
+        """
+        Image annotation tools
+        - [CVAT](https://github.com/opencv/cvat)
+        - [LabelImg](https://github.com/tzutalin/labelImg)
+
+        Objection detection algorithms:
+        - YOLOv4, [YOLOv5](https://github.com/ultralytics/yolov5)
+        - [EfficientDet](https://github.com/rwightman/efficientdet-pytorch)
+        """
+    )
 
 
 if __name__ == "__main__":
